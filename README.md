@@ -1,4 +1,4 @@
 BeatDave
 ========
 
-Track. Compete. Win. And Win again. FTW.
+Track. Compete. Win. And Win again. And track some more.

@@ -9,7 +9,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
     public class DataSetsController : FatApiController
     {
         // GET /api/default1
-        public IEnumerable<DataSet> Get(string q)
+        public IEnumerable<DataSet> Get()
         {
             var dataSets = new List<DataSet>
             {

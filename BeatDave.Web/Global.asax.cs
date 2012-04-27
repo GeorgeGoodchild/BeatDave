@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using System.Net.Sockets;
 using System.Web;
 using System.Web.Mvc;
@@ -10,6 +10,11 @@ using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Client.MvcIntegration;
+using System.Web.Http;
+using BeatDave.Web.Infrastructure.Formatters;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using AutoMapper;
 
 namespace BeatDave.Web
 {    
@@ -44,24 +49,20 @@ namespace BeatDave.Web
 
         protected void Application_Start()
         {
-            AreaRegistration.RegisterAllAreas();
-
             LogManager.GetCurrentClassLogger().Info("Started application");
 
             RegisterGlobalFilters(GlobalFilters.Filters);
+            AreaRegistration.RegisterAllAreas();
+            RegisterRoutes(RouteTable.Routes);
+            RegisterFormatters(GlobalConfiguration.Configuration);
 
             InitializeDocumentStore();
-
-            RegisterRoutes(RouteTable.Routes);
-
-            DataAnnotationsModelValidatorProviderExtensions.RegisterValidationExtensions();
-
-            //AutoMapperConfiguration.Configure();
-
             FatController.DocumentStore = DocumentStore;
             FatApiController.DocumentStore = DocumentStore;
-
-            //TaskExecutor.DocumentStore = DocumentStore;            
+            
+            //AutoMapperConfiguration.Configure();
+            //DataAnnotationsModelValidatorProviderExtensions.RegisterValidationExtensions();
+            //TaskExecutor.DocumentStore = DocumentStore;
         }
 
 
@@ -74,7 +75,21 @@ namespace BeatDave.Web
         private void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-            routes.IgnoreRoute("favicon.ico");            
+            routes.IgnoreRoute("favicon.ico");
+        }
+
+        private void RegisterFormatters(HttpConfiguration config)
+        {
+            //
+            // Format dates properly rather than with the ridiculous Unix 1970 weird thing
+            //
+            var settings = new JsonSerializerSettings();
+            settings.Converters.Add(new IsoDateTimeConverter());
+
+            //
+            // Setting it at position [0] makes it the default formatter and will override the DataContratSerializer for JSON messages
+            // 
+            config.Formatters[0] = new JsonNetFormatter(settings);
         }
 
         private void InitializeDocumentStore()

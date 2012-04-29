@@ -11,7 +11,7 @@ using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Client.MvcIntegration;
 using System.Web.Http;
-using BeatDave.Web.Infrastructure.Formatters;
+using BeatDave.Web.Infrastructure;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using AutoMapper;

@@ -146,6 +146,9 @@
   <ItemGroup>
     <Compile Include="Areas\Api_v1\Api_v1AreaRegistration.cs" />
     <Compile Include="Areas\Api_v1\Controllers\DataSetsController.cs" />
+    <Compile Include="Areas\Api_v1\Models\DataPointInput.cs" />
+    <Compile Include="Areas\Api_v1\Models\DataSetInput.cs" />
+    <Compile Include="Areas\Api_v1\Models\DataSetView.cs" />
     <Compile Include="Areas\App\AppAreaRegistration.cs" />
     <Compile Include="Areas\App\Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -154,6 +157,7 @@
     <Compile Include="Infrastructure\ActionResults\XmlResult.cs" />
     <Compile Include="Infrastructure\Controllers\FatApiController.cs" />
     <Compile Include="Infrastructure\Controllers\FatController.cs" />
+    <Compile Include="Infrastructure\Formatters\JsonDotNetFormatter.cs" />
     <Compile Include="Models\Competition.cs" />
     <Compile Include="Models\TransforedDataSet.cs" />
     <Compile Include="Models\DateRange.cs" />
@@ -167,6 +171,7 @@
     <Compile Include="Models\Units.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="AnyOldIron\Any.Old.Iron" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />

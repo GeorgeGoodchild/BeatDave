@@ -2,19 +2,19 @@ using System.Collections.Generic;
 using BeatDave.Web.Infrastructure;
 using BeatDave.Web.Models;
 using System;
-using BeatDave.Web.Areas.Api_v1.Contracts;
+using BeatDave.Web.Areas.Api_v1.Models;
 
 namespace BeatDave.Web.Areas.Api_v1.Controllers
 {
     public class DataSetsController : FatApiController
     {
         // GET /api/default1
-        public IEnumerable<DataSet> Get()
+        public IEnumerable<DataSetView> Get()
         {
-            var dataSets = new List<DataSet>
+            var dataSets = new List<DataSetView>
             {
-                new DataSet
-                {
+                new DataSetView
+                {                    
                     Id = "datasets/1",
                     Title = "My Weight",
                     Description = "4 Hour Body weight loss tracking",
@@ -24,22 +24,22 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
                        "4 Hour Body"
                     },
 
-                    Units = new Units
+                    Units = new DataSetView.UnitsView
                     {
                         Precision = 2,
                         Symbol = "kgs",
                         SymbolPosition = SymbolPosition.After
                     },
 
-                    DataPoints = new List<DataPoint>
+                    DataPoints = new List<DataSetView.DataPointView>
                     {
-                        new DataPoint
+                        new DataSetView.DataPointView
                         {
                             Id = 1,
                             OccurredOn = DateTime.Now.AddDays(-10),
                             Value = 90
                         },
-                        new DataPoint
+                        new DataSetView.DataPointView
                         {
                             Id = 2,
                             OccurredOn = DateTime.Now.AddDays(-5),
@@ -48,46 +48,52 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
                     },
 
                     Visibility = Visibility.PublicAnonymous,
-                    //AutoShareOn = new List<ISocialNetworkAccount>
-                    //{
-                    //    new FacebookAccount
-                    //    {
-                    //    },
-                    //    new TwitterAccount
-                    //    {
-                    //    }
-                    //},
-                    OwnerId = "users/georgegoodchild"
+                    AutoShareOn = new List<DataSetView.SocialNetworkAccountView>
+                    {
+                        new DataSetView.SocialNetworkAccountView
+                        {
+                            SocialNetworkName = "Facebook",
+                            SocialNetoworkUserName = "GeorgeGoodchild"
+                        },
+                        new DataSetView.SocialNetworkAccountView
+                        {
+                            SocialNetworkName = "Twitter",
+                            SocialNetoworkUserName = "GGoodchild"
+                        }
+                    },
+                    Owner = new DataSetView.OwnerView 
+                    {
+                        OwnerId = "users/georgegoodchild",
+                        OwnerName = "George Goodchild"
+                    },
+                    
                 }
             };
-
-            dataSets[0].DataPoints[0].DataSet = dataSets[0];
 
             return dataSets;
         }
 
         // GET /api/default1/5
-        public DataSetContract Get(string id)
+        public DataSetView Get(string id)
         {
             var ds = base.RavenSession.Load<DataSet>(id);
 
-            
-
+            return null;
         }
 
         // POST /api/default1
-        public void Post(string value)
+        public void Post(DataSetInput dataSet)
         {
 
         }
 
         // PUT /api/default1/5
-        public void Put(int id, string value)
+        public void Put(DataSetInput dataSet)
         {
         }
 
         // DELETE /api/default1/5
-        public void Delete(int id)
+        public void Delete(string dataSetId)
         {
         }
     }

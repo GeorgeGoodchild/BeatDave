@@ -1,100 +1,93 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Net;
+using AutoMapper;
 using BeatDave.Web.Infrastructure;
 using BeatDave.Web.Models;
-using System;
 using BeatDave.Web.Areas.Api_v1.Models;
+using DataAnnotationsExtensions;
+using Raven.Client.Linq;
 
 namespace BeatDave.Web.Areas.Api_v1.Controllers
 {
     public class DataSetsController : FatApiController
     {
-        // GET /api/default1
-        public IEnumerable<DataSetView> Get()
+        // GET /Api/v1/DataSets
+        public HttpResponseMessage<List<DataSetView>> Get(string q, int skip, int take)
         {
-            var dataSets = new List<DataSetView>
-            {
-                new DataSetView
-                {                    
-                    Id = "datasets/1",
-                    Title = "My Weight",
-                    Description = "4 Hour Body weight loss tracking",
-                    Tags = new List<string>
-                    {
-                       "Weight Loss",
-                       "4 Hour Body"
-                    },
+            var dataSets = base.RavenSession.Query<DataSet>()
+                                            .Skip(0)
+                                            .Take(10)
+                                            .ToArray();
 
-                    Units = new DataSetView.UnitsView
-                    {
-                        Precision = 2,
-                        Symbol = "kgs",
-                        SymbolPosition = SymbolPosition.After
-                    },
+            var dataSetViews = from ds in dataSets
+                               select ds.MapTo<DataSetView>();
 
-                    DataPoints = new List<DataSetView.DataPointView>
-                    {
-                        new DataSetView.DataPointView
-                        {
-                            Id = 1,
-                            OccurredOn = DateTime.Now.AddDays(-10),
-                            Value = 90
-                        },
-                        new DataSetView.DataPointView
-                        {
-                            Id = 2,
-                            OccurredOn = DateTime.Now.AddDays(-5),
-                            Value = 85
-                        }
-                    },
-
-                    Visibility = Visibility.PublicAnonymous,
-                    AutoShareOn = new List<DataSetView.SocialNetworkAccountView>
-                    {
-                        new DataSetView.SocialNetworkAccountView
-                        {
-                            SocialNetworkName = "Facebook",
-                            SocialNetoworkUserName = "GeorgeGoodchild"
-                        },
-                        new DataSetView.SocialNetworkAccountView
-                        {
-                            SocialNetworkName = "Twitter",
-                            SocialNetoworkUserName = "GGoodchild"
-                        }
-                    },
-                    Owner = new DataSetView.OwnerView 
-                    {
-                        OwnerId = "users/georgegoodchild",
-                        OwnerName = "George Goodchild"
-                    },
-                    
-                }
-            };
-
-            return dataSets;
+            return Ok(dataSetViews.ToList());
         }
 
-        // GET /api/default1/5
-        public DataSetView Get(string id)
+        // GET /Api/v1/DataSets/5
+        public HttpResponseMessage<DataSetView> Get(int dataSetId)
         {
-            var ds = base.RavenSession.Load<DataSet>(id);
+            if (dataSetId <= 0)
+                return BadRequest<DataSetView>(null, "DataSet Id is missing");
 
-            return null;
+            var dataSet = base.RavenSession.Load<DataSet>(dataSetId);
+
+            if (dataSet == null)
+                return NotFound<DataSetView>(null);
+
+            var dataSetView = dataSet.MapTo<DataSetView>();
+
+            return Ok(dataSetView);
         }
 
-        // POST /api/default1
-        public void Post(DataSetInput dataSet)
+        // POST /Api/v1/DataSets
+        public HttpResponseMessage Post(DataSetInput dataSetInput)
         {
+            if (ModelState.IsValid == false)
+                return BadRequest(ModelState.FirstErrorMessage());
 
+            var dataSet = new DataSet();
+            dataSetInput.MapToInstance(dataSet);
+
+            this.RavenSession.Store(dataSet);
+
+            var dataSetView = dataSet.MapTo<DataSetView>();
+
+            return Created(dataSetView);
         }
 
-        // PUT /api/default1/5
-        public void Put(DataSetInput dataSet)
+        // PUT /Api/v1/DataSets
+        public HttpResponseMessage Put(DataSetInput dataSetInput)
         {
+            if (dataSetInput.IsNewDataSet())
+                ModelState.AddModelError("Id", "DataSet Id is missing");
+
+            if (ModelState.IsValid == false)
+                return BadRequest(ModelState.FirstErrorMessage());
+
+            var dataSet = this.RavenSession.Load<DataSet>(dataSetInput.Id);
+            dataSetInput.MapToInstance(dataSet);
+
+            var dataSetView = dataSet.MapTo<DataSetView>();
+
+            return Ok(dataSetView);
         }
 
-        // DELETE /api/default1/5
-        public void Delete(string dataSetId)
+        // DELETE /Api/v1/DataSets/5
+        public HttpResponseMessage Delete(int dataSetId)
         {
+            if (dataSetId <= 0)
+                return BadRequest("DataSet Id is missing");
+
+            var dataSet = this.RavenSession.Load<DataSet>(dataSetId);
+
+            this.RavenSession.Delete(dataSet);
+
+            return Ok();
         }
     }
 }

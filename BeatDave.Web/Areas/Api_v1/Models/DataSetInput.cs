@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,17 +10,24 @@ namespace BeatDave.Web.Areas.Api_v1.Models
 {
     public class DataSetInput
     {        
-        public string Id { get; set; }        
+        public int Id { get; set; }
         
         [Required]
-        public string Title { get; set; }        
+        public string Title { get; set; }
         
-        public string Description { get; set; }        
-        
+        public string Description { get; set; }
+
+        public List<string> Tags { get; set; }
+
         public UnitsInput Units { get; set; }
         
-        [Required]        
+        [Required]
         public Visibility Visibility { get; set; }
+
+        public bool IsNewDataSet()
+        {
+            return this.Id <= 0;
+        }
 
         //
         // Nested Inner Classes
@@ -34,7 +41,7 @@ namespace BeatDave.Web.Areas.Api_v1.Models
             public SymbolPosition SymbolPosition { get; set; }
             
             [Required]
-            [Max(6)]
+            [Range(0, 6)]
             public int Precision { get; set; }
         }
     }    

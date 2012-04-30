@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,7 +8,7 @@ namespace BeatDave.Web.Areas.Api_v1.Models
 {
     public class DataSetView
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public List<string> Tags { get; set; }
@@ -39,14 +39,14 @@ namespace BeatDave.Web.Areas.Api_v1.Models
 
         public class OwnerView
         {
-            public string OwnerId { get; set; }
+            public int Id { get; set; }
             public string OwnerName { get; set; }
         }
 
         public class SocialNetworkAccountView
         {
-            public string SocialNetworkName { get; set; }
-            public string SocialNetoworkUserName { get; set; }
+            public string NetworkName { get; set; }
+            public string UserName { get; set; }
         }
     }
 }

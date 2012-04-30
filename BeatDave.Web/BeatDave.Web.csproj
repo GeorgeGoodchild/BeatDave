@@ -65,7 +65,7 @@
     </Reference>
     <Reference Include="Raven.Client.Lightweight">
       <HintPath>..\packages\RavenDB-Client.1.0.888\lib\net40\Raven.Client.Lightweight.dll</HintPath>
-    </Reference>    
+    </Reference>
     <Reference Include="Raven.Client.MvcIntegration">
       <HintPath>..\packages\RavenDB-Client.1.0.888\lib\net40\Raven.Client.MvcIntegration.dll</HintPath>
     </Reference>
@@ -141,6 +141,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure\AutoMapper\AutoMapperConfiguration.cs" />
+    <Compile Include="Infrastructure\AutoMapper\Profiles\DataSetProfile.cs" />
+    <Compile Include="Infrastructure\AutoMapper\Resolvers\MvcHtmlStringConverter.cs" />
+    <Compile Include="Infrastructure\AutoMapper\Resolvers\RavenIdResolver.cs" />
     <Compile Include="Areas\Api_v1\Api_v1AreaRegistration.cs" />
     <Compile Include="Areas\Api_v1\Controllers\DataSetsController.cs" />
     <Compile Include="Areas\Api_v1\Models\DataPointInput.cs" />
@@ -152,9 +156,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\ActionResults\XmlResult.cs" />
+    <Compile Include="Infrastructure\AutoMapper\AutoMapperExtensions.cs" />
     <Compile Include="Infrastructure\Controllers\FatApiController.cs" />
     <Compile Include="Infrastructure\Controllers\FatController.cs" />
     <Compile Include="Infrastructure\Formatters\JsonDotNetFormatter.cs" />
+    <Compile Include="Infrastructure\Validation\ModelStateExtensions.cs" />
     <Compile Include="Models\Competition.cs" />
     <Compile Include="Models\TransforedDataSet.cs" />
     <Compile Include="Models\DateRange.cs" />

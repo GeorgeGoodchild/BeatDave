@@ -59,10 +59,11 @@ namespace BeatDave.Web
             InitializeDocumentStore();
             FatController.DocumentStore = DocumentStore;
             FatApiController.DocumentStore = DocumentStore;
-            
-            //AutoMapperConfiguration.Configure();
-            //DataAnnotationsModelValidatorProviderExtensions.RegisterValidationExtensions();
             //TaskExecutor.DocumentStore = DocumentStore;
+
+            AutoMapperConfiguration.Configure();
+            Mapper.AssertConfigurationIsValid();
+            DataAnnotationsModelValidatorProviderExtensions.RegisterValidationExtensions();
         }
 
 

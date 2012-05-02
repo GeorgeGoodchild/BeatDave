@@ -4,11 +4,17 @@ using System.Web.Http.Controllers;
 using Raven.Client;
 using System.Net.Http;
 using System.Net;
+using System.Linq.Expressions;
+using System;
 
 namespace BeatDave.Web.Infrastructure
 {
     public class FatApiController : ApiController
     {
+        // Constants
+        protected const int DefaultSkip = 0;
+        protected const int DefaultTake = 25;
+
         // Properties
         public static IDocumentStore DocumentStore { get; set; }
         public IDocumentSession RavenSession { get; set; }

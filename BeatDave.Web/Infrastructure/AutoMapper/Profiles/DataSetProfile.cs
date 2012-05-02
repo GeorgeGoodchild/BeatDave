@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -19,9 +19,14 @@ namespace BeatDave.Web.Infrastructure
                 .ForMember(t => t.Id, o => o.Ignore())
                 .ForMember(t => t.AutoShareOn, o => o.Ignore())
                 .ForMember(t => t.DataPoints, o => o.Ignore())
-                .ForMember(t => t.OwnerId, o => o.Ignore());   // TODO: Create resolver to get value from the current auth user 
+                .ForMember(t => t.OwnerId, o => o.Ignore()) // TODO: Create resolver to get value from the current auth user 
+                .ForMember(t => t.DataPoints, o => o.UseValue(new List<DataPoint>()))
+                .ForMember(t => t.AutoShareOn, o => o.UseValue(new List<ISocialNetworkAccount>()));
 
             Mapper.CreateMap<DataSetInput.UnitsInput, Units>();
+
+            Mapper.CreateMap<DataSetView.DataPointView, DataPoint>()
+                .ForMember(t => t.DataSet, o => o.Ignore());
 
             //
             // Model -> DataSetView
@@ -31,9 +36,9 @@ namespace BeatDave.Web.Infrastructure
                 .ForMember(t => t.Owner, o => o.Ignore());
 
             Mapper.CreateMap<Units, DataSetView.UnitsView>();
-
+            
             Mapper.CreateMap<DataPoint, DataSetView.DataPointView>();
-
+            
             Mapper.CreateMap<ISocialNetworkAccount, DataSetView.SocialNetworkAccountView>()
                 .ForMember(t => t.NetworkName, o => o.MapFrom(s => s.SocialNetworkName))
                 .ForMember(t => t.UserName, o => o.Ignore());   // TODO: This can't just be ignored

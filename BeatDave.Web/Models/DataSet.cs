@@ -3,6 +3,7 @@ namespace BeatDave.Web.Models
 {
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using Newtonsoft.Json;
 
     public enum Visibility
@@ -15,7 +16,7 @@ namespace BeatDave.Web.Models
 
     [JsonObject(IsReference = true)] 
     public class DataSet
-    {
+    {        
         public string Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
@@ -27,5 +28,22 @@ namespace BeatDave.Web.Models
         public string OwnerId { get; set; }
         public List<ISocialNetworkAccount> AutoShareOn { get; set; }        
         public Visibility Visibility { get; set; }
+
+        // C'tor
+        public DataSet()
+        { }
+
+
+        // Public Members
+        public void AddDataPoint(DataPoint dp)
+        {            
+            if (this.DataPoints == null) 
+                this.DataPoints = new List<DataPoint>();
+
+            dp.DataSet = this;
+            dp.Id = this.DataPoints.Count == 0 ? 1 : this.DataPoints.Max(x => x.Id) + 1;
+
+            this.DataPoints.Add(dp);
+        }
     }
 }

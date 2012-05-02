@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using System.Web.Mvc;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace BeatDave.Web.Infrastructure
 {

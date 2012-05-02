@@ -1,20 +1,19 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
+using AutoMapper;
 using BeatDave.Web.Infrastructure;
 using DataAnnotationsExtensions.ClientValidation;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using NLog;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Client.MvcIntegration;
-using System.Web.Http;
-using BeatDave.Web.Infrastructure;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using AutoMapper;
 
 namespace BeatDave.Web
 {    

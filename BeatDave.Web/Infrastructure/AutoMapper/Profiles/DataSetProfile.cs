@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using AutoMapper;
 using BeatDave.Web.Areas.Api_v1.Models;
 using BeatDave.Web.Models;
@@ -25,7 +22,8 @@ namespace BeatDave.Web.Infrastructure
 
             Mapper.CreateMap<DataSetInput.UnitsInput, Units>();
 
-            Mapper.CreateMap<DataSetView.DataPointView, DataPoint>()
+            Mapper.CreateMap<DataPointInput, DataPoint>()
+                .ForMember(t => t.Id, o => o.Ignore())
                 .ForMember(t => t.DataSet, o => o.Ignore());
 
             //

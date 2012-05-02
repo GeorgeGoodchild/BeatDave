@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using AutoMapper;
 
 namespace BeatDave.Web.Infrastructure
 {

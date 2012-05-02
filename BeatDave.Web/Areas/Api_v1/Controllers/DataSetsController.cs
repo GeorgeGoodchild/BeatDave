@@ -1,15 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net;
-using AutoMapper;
+using BeatDave.Web.Areas.Api_v1.Models;
 using BeatDave.Web.Infrastructure;
 using BeatDave.Web.Models;
-using BeatDave.Web.Areas.Api_v1.Models;
-using DataAnnotationsExtensions;
 using Raven.Client.Linq;
-using System.Web.Http;
 
 namespace BeatDave.Web.Areas.Api_v1.Controllers
 {
@@ -45,7 +40,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             return Ok(dataSetView);
         }
 
-
+       
 
         // POST /Api/v1/DataSets
         public HttpResponseMessage<DataSetView> Post(DataSetInput dataSetInput)

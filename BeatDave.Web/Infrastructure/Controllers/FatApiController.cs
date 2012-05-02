@@ -1,11 +1,9 @@
+using System.Net;
+using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using Raven.Client;
-using System.Net.Http;
-using System.Net;
-using System.Linq.Expressions;
-using System;
 
 namespace BeatDave.Web.Infrastructure
 {

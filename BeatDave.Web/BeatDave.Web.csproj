@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -141,11 +141,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Infrastructure\AutoMapper\AutoMapperConfiguration.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Profiles\DataSetProfile.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Resolvers\MvcHtmlStringConverter.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Resolvers\RavenIdResolver.cs" />
     <Compile Include="Areas\Api_v1\Api_v1AreaRegistration.cs" />
+    <Compile Include="Areas\Api_v1\Controllers\DataPointsController.cs" />
     <Compile Include="Areas\Api_v1\Controllers\DataSetsController.cs" />
     <Compile Include="Areas\Api_v1\Models\DataPointInput.cs" />
     <Compile Include="Areas\Api_v1\Models\DataSetInput.cs" />
@@ -156,7 +153,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\ActionResults\XmlResult.cs" />
+    <Compile Include="Infrastructure\AutoMapper\AutoMapperConfiguration.cs" />
     <Compile Include="Infrastructure\AutoMapper\AutoMapperExtensions.cs" />
+    <Compile Include="Infrastructure\AutoMapper\Profiles\DataSetProfile.cs" />
+    <Compile Include="Infrastructure\AutoMapper\Resolvers\MvcHtmlStringConverter.cs" />
+    <Compile Include="Infrastructure\AutoMapper\Resolvers\RavenIdResolver.cs" />
     <Compile Include="Infrastructure\Controllers\FatApiController.cs" />
     <Compile Include="Infrastructure\Controllers\FatController.cs" />
     <Compile Include="Infrastructure\Formatters\JsonDotNetFormatter.cs" />

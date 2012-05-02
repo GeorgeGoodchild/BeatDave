@@ -9,17 +9,18 @@ using BeatDave.Web.Models;
 using BeatDave.Web.Areas.Api_v1.Models;
 using DataAnnotationsExtensions;
 using Raven.Client.Linq;
+using System.Web.Http;
 
 namespace BeatDave.Web.Areas.Api_v1.Controllers
 {
     public class DataSetsController : FatApiController
     {
         // GET /Api/v1/DataSets
-        public HttpResponseMessage<List<DataSetView>> Get(string q, int skip, int take)
+        public HttpResponseMessage<List<DataSetView>> Get(string q = "", int skip = DefaultSkip, int take = DefaultTake)
         {
             var dataSets = base.RavenSession.Query<DataSet>()
-                                            .Skip(0)
-                                            .Take(10)
+                                            .Skip(skip)
+                                            .Take(take)
                                             .ToArray();
 
             var dataSetViews = from ds in dataSets
@@ -28,11 +29,11 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             return Ok(dataSetViews.ToList());
         }
 
-        // GET /Api/v1/DataSets/5
+        // GET /Api/v1/DataSets/33
         public HttpResponseMessage<DataSetView> Get(int dataSetId)
         {
             if (dataSetId <= 0)
-                return BadRequest<DataSetView>(null, "DataSet Id is missing");
+                return BadRequest<DataSetView>(null, "Data Set Id is missing");
 
             var dataSet = base.RavenSession.Load<DataSet>(dataSetId);
 
@@ -44,21 +45,25 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             return Ok(dataSetView);
         }
 
+
+
         // POST /Api/v1/DataSets
-        public HttpResponseMessage Post(DataSetInput dataSetInput)
+        public HttpResponseMessage<DataSetView> Post(DataSetInput dataSetInput)
         {
             if (ModelState.IsValid == false)
-                return BadRequest(ModelState.FirstErrorMessage());
+                return BadRequest<DataSetView>(null, ModelState.FirstErrorMessage());
 
             var dataSet = new DataSet();
             dataSetInput.MapToInstance(dataSet);
 
-            this.RavenSession.Store(dataSet);
+            base.RavenSession.Store(dataSet);
 
             var dataSetView = dataSet.MapTo<DataSetView>();
 
             return Created(dataSetView);
         }
+
+
 
         // PUT /Api/v1/DataSets
         public HttpResponseMessage Put(DataSetInput dataSetInput)
@@ -69,13 +74,15 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             if (ModelState.IsValid == false)
                 return BadRequest(ModelState.FirstErrorMessage());
 
-            var dataSet = this.RavenSession.Load<DataSet>(dataSetInput.Id);
+            var dataSet = base.RavenSession.Load<DataSet>(dataSetInput.Id);
             dataSetInput.MapToInstance(dataSet);
 
             var dataSetView = dataSet.MapTo<DataSetView>();
 
             return Ok(dataSetView);
         }
+        
+
 
         // DELETE /Api/v1/DataSets/5
         public HttpResponseMessage Delete(int dataSetId)
@@ -83,9 +90,9 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             if (dataSetId <= 0)
                 return BadRequest("DataSet Id is missing");
 
-            var dataSet = this.RavenSession.Load<DataSet>(dataSetId);
+            var dataSet = base.RavenSession.Load<DataSet>(dataSetId);
 
-            this.RavenSession.Delete(dataSet);
+            base.RavenSession.Delete(dataSet);
 
             return Ok();
         }

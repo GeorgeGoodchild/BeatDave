@@ -1,4 +1,4 @@
-﻿
+
 namespace BeatDave.Web.Models
 {
     using System.Collections.Generic;
@@ -17,18 +17,20 @@ namespace BeatDave.Web.Models
 
     [JsonObject(IsReference = true)] 
     public class DataSet
-    {        
+    {
+        // Properties
         public string Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public List<string> Tags { get; set; }
-        
+
         public Units Units { get; set; }
         private List<DataPoint> DataPoints { get; set; }
-        
+
         public string OwnerId { get; set; }
-        public List<ISocialNetworkAccount> AutoShareOn { get; set; }        
+        public List<ISocialNetworkAccount> AutoShareOn { get; set; }
         public Visibility Visibility { get; set; }
+
 
         // C'tor
         public DataSet()
@@ -36,6 +38,14 @@ namespace BeatDave.Web.Models
 
 
         // Public Members
+        public IEnumerable<DataPoint> GetDataPoints()
+        {
+            if (this.DataPoints == null)
+                this.DataPoints = new List<DataPoint>();
+
+            return new ReadOnlyCollection<DataPoint>(this.DataPoints);
+        }
+
         public void AddDataPoint(DataPoint dp)
         {            
             if (this.DataPoints == null) 
@@ -47,12 +57,12 @@ namespace BeatDave.Web.Models
             this.DataPoints.Add(dp);
         }
 
-        public IEnumerable<DataPoint> GetDataPoints()
+        public void RemoveDataPoint(DataPoint dp)
         {
             if (this.DataPoints == null)
-                this.DataPoints = new List<DataPoint>();
+                return;
 
-            return new ReadOnlyCollection<DataPoint>(this.DataPoints);
+            this.DataPoints.Remove(dp);
         }
     }
 }

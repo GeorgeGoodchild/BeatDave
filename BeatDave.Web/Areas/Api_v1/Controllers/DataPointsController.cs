@@ -56,6 +56,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         }
 
 
+
         // POST /Api/v1/DataSets/33/DataPoints
         public HttpResponseMessage<DataSetView.DataPointView> Post([FromUri]int? dataSetId, DataPointInput dataPointInput)
         {
@@ -86,6 +87,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         }
 
 
+
         // PUT /Api/v1/DataSets/33/DataPoints
         public HttpResponseMessage<DataSetView.DataPointView> Put([FromUri]int? dataSetId, DataPointInput dataPointInput)
         {
@@ -105,6 +107,10 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
                 return NotFound<DataSetView.DataPointView>(null);
 
             var dataPoint = dataSet.GetDataPoints().SingleOrDefault(x=> x.Id == dataPointInput.Id);
+
+            if (dataPoint == null)
+                return NotFound<DataSetView.DataPointView>(null);
+
             dataPointInput.MapToInstance(dataPoint);
             
             var dataPointView = dataPoint.MapTo<DataSetView.DataPointView>();
@@ -112,17 +118,30 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             return Created(dataPointView);
         }
 
-        //// DELETE /Api/v1/DataSets/5
-        //public HttpResponseMessage Delete(int dataSetId, int dataPointId)
-        //{
-        //    if (id <= 0)
-        //        return BadRequest("DataSet Id is missing");
 
-        //    var dataSet = base.RavenSession.Load<DataSet>(id);
 
-        //    base.RavenSession.Delete(dataSet);
+        // DELETE /Api/v1/DataSets/5
+        public HttpResponseMessage Delete(int dataSetId, int dataPointId)
+        {
+            if (dataSetId <= 0)
+                return BadRequest("Data Set Id is missing");
 
-        //    return Ok();
-        //}
+            if (dataPointId <= 0)
+                return BadRequest("Data Point Id is missing");
+
+            var dataSet = base.RavenSession.Load<DataSet>(dataSetId);
+
+            if (dataSet == null)
+                return NotFound();
+
+            var dataPoint = dataSet.GetDataPoints().SingleOrDefault(x => x.Id == dataPointId);
+
+            if (dataPoint == null)
+                return NotFound();
+
+            dataSet.RemoveDataPoint(dataPoint);
+
+            return Ok();
+        }
     }
 }

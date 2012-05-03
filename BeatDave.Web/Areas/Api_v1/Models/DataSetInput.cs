@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using BeatDave.Web.Models;
@@ -5,9 +6,10 @@ using BeatDave.Web.Models;
 namespace BeatDave.Web.Areas.Api_v1.Models
 {
     public class DataSetInput
-    {        
-        public int Id { get; set; }
-        
+    {
+        [Obsolete]
+        public int DataSetId { get; set; }
+
         [Required]
         public string Title { get; set; }
         
@@ -16,14 +18,9 @@ namespace BeatDave.Web.Areas.Api_v1.Models
         public List<string> Tags { get; set; }
 
         public UnitsInput Units { get; set; }
-        
+
         [Required]
         public Visibility Visibility { get; set; }
-
-        public bool IsNewDataSet()
-        {
-            return this.Id <= 0;
-        }
 
         //
         // Nested Inner Classes
@@ -32,10 +29,10 @@ namespace BeatDave.Web.Areas.Api_v1.Models
         {
             [Required]
             public string Symbol { get; set; }
-            
+
             [Required]
             public SymbolPosition SymbolPosition { get; set; }
-            
+
             [Required]
             [Range(0, 6)]
             public int Precision { get; set; }

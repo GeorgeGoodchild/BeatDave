@@ -1,16 +1,22 @@
-﻿
+
 namespace BeatDave.Web.Models
 {
     using System;
 
     public class DateRange
     {
-        public static DateRange Forever = new DateRange { From = DateTime.MinValue, To = DateTime.MaxValue };
+        public static DateRange Forever = new DateRange(DateTime.MinValue, DateTime.MaxValue);
 
-        public DateTime From { get; set; }
-        public DateTime To { get; set; }
+        public DateTime From { get; private set; }
+        public DateTime To { get; private set; }
 
-        // override object.Equals
+        public DateRange(DateTime from, DateTime to)
+        {
+            this.From = from;
+            this.To = to;
+        }
+
+        // System.Object overrides
         public override bool Equals(object obj)
         {
             if (object.ReferenceEquals(this, obj))

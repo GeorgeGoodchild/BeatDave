@@ -2,6 +2,7 @@
 namespace BeatDave.Web.Models
 {
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
     using Newtonsoft.Json;
@@ -23,7 +24,7 @@ namespace BeatDave.Web.Models
         public List<string> Tags { get; set; }
         
         public Units Units { get; set; }
-        public List<DataPoint> DataPoints { get; set; }
+        private List<DataPoint> DataPoints { get; set; }
         
         public string OwnerId { get; set; }
         public List<ISocialNetworkAccount> AutoShareOn { get; set; }        
@@ -44,6 +45,14 @@ namespace BeatDave.Web.Models
             dp.Id = this.DataPoints.Count == 0 ? 1 : this.DataPoints.Max(x => x.Id) + 1;
 
             this.DataPoints.Add(dp);
+        }
+
+        public IEnumerable<DataPoint> GetDataPoints()
+        {
+            if (this.DataPoints == null)
+                this.DataPoints = new List<DataPoint>();
+
+            return new ReadOnlyCollection<DataPoint>(this.DataPoints);
         }
     }
 }

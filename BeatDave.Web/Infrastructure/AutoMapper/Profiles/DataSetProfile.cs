@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using AutoMapper;
 using BeatDave.Web.Areas.Api_v1.Models;
 using BeatDave.Web.Models;
@@ -15,10 +14,8 @@ namespace BeatDave.Web.Infrastructure
             Mapper.CreateMap<DataSetInput, DataSet>()
                 .ForMember(t => t.Id, o => o.Ignore())
                 .ForMember(t => t.AutoShareOn, o => o.Ignore())
-                .ForMember(t => t.DataPoints, o => o.Ignore())
                 .ForMember(t => t.OwnerId, o => o.Ignore()) // TODO: Create resolver to get value from the current auth user 
-                .ForMember(t => t.DataPoints, o => o.UseValue(new List<DataPoint>()))
-                .ForMember(t => t.AutoShareOn, o => o.UseValue(new List<ISocialNetworkAccount>()));
+                .ForMember(t => t.AutoShareOn, o => o.Ignore());
 
             Mapper.CreateMap<DataSetInput.UnitsInput, Units>();
 

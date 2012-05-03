@@ -21,7 +21,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             if (dataSet == null)
                 return NotFound<List<DataSetView.DataPointView>>(null);
 
-            var dataPointViews = from dp in dataSet.DataPoints
+            var dataPointViews = from dp in dataSet.GetDataPoints()
                                  select dp.MapTo<DataSetView.DataPointView>();
 
             return Ok(dataPointViews.ToList());
@@ -41,7 +41,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             if (dataSet == null)
                 return NotFound<DataSetView.DataPointView>(null);
 
-            var dataPoints = from dp in dataSet.DataPoints
+            var dataPoints = from dp in dataSet.GetDataPoints()
                              where dp.Id == dataPointId
                              select dp;
 
@@ -59,6 +59,8 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         // POST /Api/v1/DataSets/33/DataPoints
         public HttpResponseMessage<DataSetView.DataPointView> Post([FromUri]int? dataSetId, DataPointInput dataPointInput)
         {
+            // HACK: Once out of beta the dataSetId parameter should be bound from the Url rather than the request body
+            //       Stop the parameter being nullable too
             if (dataSetId == null) dataSetId = dataPointInput.DataSetId;
 
             if (dataSetId <= 0)
@@ -84,22 +86,31 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         }
 
 
-        //// PUT /Api/v1/DataSets
-        //public HttpResponseMessage Put(int dataSetId, DataPointInput dataSetInput)
-        //{
-        //    if (dataSetInput.IsNewDataSet())
-        //        ModelState.AddModelError("Id", "DataSet Id is missing");
+        // PUT /Api/v1/DataSets/33/DataPoints
+        public HttpResponseMessage<DataSetView.DataPointView> Put([FromUri]int? dataSetId, DataPointInput dataPointInput)
+        {
+            // HACK: Once out of beta the dataSetId parameter should be bound from the Url rather than the request body
+            //       Stop the parameter being nullable too
+            if (dataSetId == null) dataSetId = dataPointInput.DataSetId;
 
-        //    if (ModelState.IsValid == false)
-        //        return BadRequest(ModelState.FirstErrorMessage());
+            if (dataSetId <= 0)
+                return BadRequest<DataSetView.DataPointView>(null, "Data Set Id is missing");
 
-        //    var dataSet = base.RavenSession.Load<DataSet>(dataSetInput.Id);
-        //    dataSetInput.MapToInstance(dataSet);
+            if (ModelState.IsValid == false)
+                return BadRequest<DataSetView.DataPointView>(null, ModelState.FirstErrorMessage());
 
-        //    var dataSetView = dataSet.MapTo<DataSetView>();
+            var dataSet = base.RavenSession.Load<DataSet>(dataSetId);
 
-        //    return Ok(dataSetView);
-        //}
+            if (dataSet == null)
+                return NotFound<DataSetView.DataPointView>(null);
+
+            var dataPoint = dataSet.GetDataPoints().SingleOrDefault(x=> x.Id == dataPointInput.Id);
+            dataPointInput.MapToInstance(dataPoint);
+            
+            var dataPointView = dataPoint.MapTo<DataSetView.DataPointView>();
+
+            return Created(dataPointView);
+        }
 
         //// DELETE /Api/v1/DataSets/5
         //public HttpResponseMessage Delete(int dataSetId, int dataPointId)

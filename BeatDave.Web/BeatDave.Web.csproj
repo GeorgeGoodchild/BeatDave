@@ -114,6 +114,9 @@
       <Private>True</Private>
       <HintPath>..\packages\AspNetMvc.4.0.20126.16343\lib\net40\System.Web.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Providers">
+      <HintPath>..\packages\System.Web.Providers.Core.1.0\lib\net40\System.Web.Providers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\AspNetRazor.Core.2.0.20126.16343\lib\net40\System.Web.Razor.dll</HintPath>
@@ -136,14 +139,18 @@
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
-    <Reference Include="WebActivator">
-      <HintPath>..\packages\WebActivator.1.2.0.0\lib\NETFramework40\WebActivator.dll</HintPath>
+    <Reference Include="WebActivator, Version=1.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebActivator.1.4.4\lib\net40\WebActivator.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Areas\Api_v1\Api_v1AreaRegistration.cs" />
+    <Compile Include="Areas\Api_v1\Controllers\UsersController.cs" />
     <Compile Include="Areas\Api_v1\Controllers\DataPointsController.cs" />
     <Compile Include="Areas\Api_v1\Controllers\DataSetsController.cs" />
+    <Compile Include="Areas\Api_v1\Models\UserView.cs" />
+    <Compile Include="Areas\Api_v1\Models\UserInput.cs" />
     <Compile Include="Areas\Api_v1\Models\DataPointInput.cs" />
     <Compile Include="Areas\Api_v1\Models\DataSetInput.cs" />
     <Compile Include="Areas\Api_v1\Models\DataSetView.cs" />
@@ -155,12 +162,14 @@
     <Compile Include="Infrastructure\ActionResults\XmlResult.cs" />
     <Compile Include="Infrastructure\AutoMapper\AutoMapperConfiguration.cs" />
     <Compile Include="Infrastructure\AutoMapper\AutoMapperExtensions.cs" />
+    <Compile Include="Infrastructure\AutoMapper\Profiles\UserProfile.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\DataSetProfile.cs" />
     <Compile Include="Infrastructure\AutoMapper\Resolvers\MvcHtmlStringConverter.cs" />
     <Compile Include="Infrastructure\AutoMapper\Resolvers\RavenIdResolver.cs" />
     <Compile Include="Infrastructure\Controllers\FatApiController.cs" />
     <Compile Include="Infrastructure\Controllers\FatController.cs" />
     <Compile Include="Infrastructure\Formatters\JsonDotNetFormatter.cs" />
+    <Compile Include="Infrastructure\Modules\SuppressFormsAuthenticationRedirectModule.cs" />
     <Compile Include="Infrastructure\Validation\ModelStateExtensions.cs" />
     <Compile Include="Models\Competition.cs" />
     <Compile Include="Models\TransforedDataSet.cs" />
@@ -176,6 +185,7 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="AnyOldIron\Any.Old.Iron" />
+    <Content Include="Areas\App\Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -280,9 +290,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\App\Views\Shared\Error.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\App\Views\Home\Index.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

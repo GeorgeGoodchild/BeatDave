@@ -13,8 +13,10 @@ namespace BeatDave.Web.Areas.Api_v1
             //                            routeTemplate: "api/v1/{controller}/{id}",
             //                            defaults: new { id = RouteParameter.Optional });
 
+
             context.Routes.MapHttpRoute(name: "Api_v1_DataSets",    routeTemplate: "api/v1/DataSets/{dataSetId}",                           defaults: new { controller = "DataSets", dataSetId = RouteParameter.Optional });
             context.Routes.MapHttpRoute(name: "Api_v1_DataPoints",  routeTemplate: "api/v1/DataSets/{dataSetId}/DataPoints/{dataPointId}",  defaults: new { controller = "DataPoints", dataPointId = RouteParameter.Optional });
+            context.Routes.MapHttpRoute(name: "Api_v1_Users",       routeTemplate: "api/v1/Users/{username}",                               defaults: new { controller = "Users", username = RouteParameter.Optional });
         }
     }
 }

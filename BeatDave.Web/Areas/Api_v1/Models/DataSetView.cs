@@ -37,8 +37,8 @@ namespace BeatDave.Web.Areas.Api_v1.Models
 
         public class OwnerView
         {
-            public int Id { get; set; }
-            public string OwnerName { get; set; }
+            public int OwnerUsername { get; set; }
+            public string OwnerFullName { get; set; }
         }
 
         public class SocialNetworkAccountView

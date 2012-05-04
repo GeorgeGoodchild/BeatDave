@@ -2,3 +2,218 @@
 // Use this file placeholder to upload any new classes that you may write whilst at work (as we can't create new files on GitHub from there)
 // so you can get them checked in and then sorted at home later.
 //
+
+LOCATION: Infratstructure\Modules
+using System;
+using System.Web;
+
+namespace BeatDave.Web.Infrastructure
+{
+    // Problem:    401's returned from the API are being redirected to the Forms Auth logon page
+    // Provenance: http://haacked.com/archive/2011/10/04/prevent-forms-authentication-login-page-redirect-when-you-donrsquot-want.aspx
+    //
+    public class SuppressFormsAuthenticationRedirectModule : IHttpModule
+    {
+        // Static Properties
+        private static readonly object SuppressAuthenticationKey = new Object();
+
+
+        // Static Members
+        public static void SuppressAuthenticationRedirect(HttpContext context)
+        {
+            context.Items[SuppressAuthenticationKey] = true;
+        }
+
+        public static void SuppressAuthenticationRedirect(HttpContextBase context)
+        {
+            context.Items[SuppressAuthenticationKey] = true;
+        }
+
+
+        // C'tor
+        public SuppressFormsAuthenticationRedirectModule()
+        { }
+
+
+        // Public Members
+        public void Init(HttpApplication context)
+        {
+            context.PostReleaseRequestState += OnPostReleaseRequestState;
+            context.EndRequest += OnEndRequest;
+        }
+
+        public void Dispose()
+        {
+        }
+
+
+        // Private Event Handler Members
+        private void OnPostReleaseRequestState(object source, EventArgs args)
+        {
+            var context = (HttpApplication)source;
+            var response = context.Response;
+            var request = context.Request;
+
+            if (response.StatusCode == 401 && request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                SuppressAuthenticationRedirect(context.Context);
+            }
+        }
+
+        private void OnEndRequest(object source, EventArgs args)
+        {
+            var context = (HttpApplication)source;
+            var response = context.Response;
+
+            if (context.Context.Items.Contains(SuppressAuthenticationKey))
+            {
+                response.TrySkipIisCustomErrors = true;
+                response.ClearContent();
+                response.StatusCode = 401;
+                response.RedirectLocation = null;
+            }
+        }
+    }
+}
+
+
+LOCATION: Automapper\Profiles
+using AutoMapper;
+using BeatDave.Web.Areas.Api_v1.Models;
+using BeatDave.Web.Models;
+
+namespace BeatDave.Web.Infrastructure
+{
+    public class UserProfile : Profile
+    {
+        protected override void Configure()
+        {
+            //
+            // UserInput -> User
+            //
+            Mapper.CreateMap<UserInput, User>()
+                .ForMember(t => t.AspNetId, o => o.Ignore())
+                .ForMember(t => t.Friends, o => o.Ignore())
+                .ForMember(t => t.SocialNetworkAccounts, o => o.Ignore());
+
+            //
+            // User -> UserView
+            //
+            Mapper.CreateMap<User, UserView>()
+                .ForMember(t => t.Username, o => o.MapFrom(s => RavenIdResolver.Resolve(s.Username)))
+                .ForMember(t => t.FullName, o => o.Ignore());
+
+            Mapper.CreateMap<Friend, UserView.FriendView>()
+                .ForMember(t => t.FriendUsername, o => o.MapFrom(s => RavenIdResolver.Resolve(s.FriendUsername)))
+                .ForMember(t => t.FriendFullName, o => o.Ignore());
+        }
+    }
+}
+
+LOCATION: Api_v1\Models
+using System;
+using System.Collections.Generic;
+using BeatDave.Web.Models;
+
+namespace BeatDave.Web.Areas.Api_v1.Models
+{
+    public class UserView
+    {
+        public string Username { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string FullName { get { return (this.FirstName + " " + this.LastName).Trim(); } }
+        public string Email { get; set; }
+        public List<FriendView> Friends { get; set; }
+
+        //
+        // Nested Inner Classes
+        //
+        public class FriendView
+        {
+            public int FriendUsername { get; set; }
+            public string FriendFullName { get; set; }
+        }
+    }
+}
+
+
+
+LOCATION: Api_v1\Models
+using System;
+using System.ComponentModel.DataAnnotations;
+using DataAnnotationsExtensions;
+
+namespace BeatDave.Web.Areas.Api_v1.Models
+{
+    public class UserInput
+    {
+        [Required]
+        [RegularExpression("^[a-zA-Z0-9_]*$")]
+        public string Username { get; set; }
+
+        [Required]
+        public string Password { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        [Required]
+        [Email]
+        public string Email { get; set; }
+    }
+}
+
+
+LOCATION: Api_v1\Controllers
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Web.Http;
+using BeatDave.Web.Areas.Api_v1.Models;
+using BeatDave.Web.Infrastructure;
+using BeatDave.Web.Models;
+using System.Web.Security;
+using System.Web.Providers;
+using System;
+
+namespace BeatDave.Web.Areas.Api_v1.Controllers
+{
+    public class UsersController : FatApiController
+    {
+        // POST /Api/v1/Users
+        public HttpResponseMessage<UserView> Post(UserInput userInput)
+        {
+            if (ModelState.IsValid == false)
+                return BadRequest<UserView>(null, ModelState.FirstErrorMessage());
+
+            var existingUser = base.RavenSession.Load<User>(userInput.Username);
+
+            if (existingUser != null)
+                return BadRequest<UserView>(null, string.Format("Username {0} is taken", userInput.Username));
+
+            MembershipCreateStatus status;
+            
+            var membershipUser = Membership.CreateUser(userInput.Username,
+                                                       userInput.Password,
+                                                       userInput.Email,
+                                                       null,
+                                                       null,
+                                                       true,
+                                                       out status);
+
+            if (status != MembershipCreateStatus.Success)
+                return BadRequest<UserView>(null, status.ToString());
+
+            var user = new User() { AspNetId = membershipUser.ProviderUserKey.ToString() };
+            userInput.MapToInstance(user);
+
+            base.RavenSession.Store(user);
+
+            var userView = user.MapTo<UserView>();
+
+            return Created(userView);
+        }
+    }
+}

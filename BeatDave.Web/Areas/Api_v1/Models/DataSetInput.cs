@@ -7,8 +7,7 @@ namespace BeatDave.Web.Areas.Api_v1.Models
 {
     public class DataSetInput
     {
-        [Obsolete]
-        public int DataSetId { get; set; }
+        [Obsolete] public int DataSetId { get; set; }
 
         [Required]
         public string Title { get; set; }

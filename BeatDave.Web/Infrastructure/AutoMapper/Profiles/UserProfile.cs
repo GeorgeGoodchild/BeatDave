@@ -1,5 +1,6 @@
 using AutoMapper;
 using BeatDave.Web.Models;
+using BeatDave.Web.Areas.Api_v1.Models;
 
 namespace BeatDave.Web.Infrastructure
 {
@@ -19,7 +20,7 @@ namespace BeatDave.Web.Infrastructure
             // User -> UserView
             //
             Mapper.CreateMap<User, UserView>()
-                .ForMember(t => t.Username, o => o.MapFrom(s => RavenIdResolver.Resolve(s.Username)))
+                //.ForMember(t => t.Username, o => o.MapFrom(s => RavenIdResolver.Resolve(s.Username)))
                 .ForMember(t => t.FullName, o => o.Ignore());
 
             Mapper.CreateMap<Friend, UserView.FriendView>()

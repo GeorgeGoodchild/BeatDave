@@ -6,13 +6,14 @@ using BeatDave.Web.Infrastructure;
 using BeatDave.Web.Models;
 using Raven.Client.Linq;
 using System.Web.Http;
+using System.Web.Security;
 
 namespace BeatDave.Web.Areas.Api_v1.Controllers
 {
     public class DataSetsController : FatApiController
     {
         // GET /Api/v1/DataSets
-        [Authorize]
+        [BasicAuthorize]
         public HttpResponseMessage<List<DataSetView>> Get(string q = "", int skip = DefaultSkip, int take = DefaultTake)
         {
             var dataSets = base.RavenSession.Query<DataSet>()

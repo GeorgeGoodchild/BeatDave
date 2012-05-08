@@ -1,4 +1,4 @@
-
+using System.Linq;
 using System.Net.Http;
 using System.Web.Security;
 using BeatDave.Web.Areas.Api_v1.Models;
@@ -15,7 +15,8 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             if (ModelState.IsValid == false)
                 return BadRequest<UserView>(null, ModelState.FirstErrorMessage());
 
-            var existingUser = base.RavenSession.Load<User>(userInput.Username);
+            var existingUser = base.RavenSession.Query<User>()
+                                                .SingleOrDefault(x => x.Username == userInput.Username);
 
             if (existingUser != null)
                 return BadRequest<UserView>(null, string.Format("Username {0} is taken", userInput.Username));

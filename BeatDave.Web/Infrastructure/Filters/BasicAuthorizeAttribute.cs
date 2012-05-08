@@ -56,7 +56,7 @@ namespace BeatDave.Web.Infrastructure
             
             if (basicCredentials != null)
             {
-                var isAuthenticated = FormsAuthentication.Authenticate(basicCredentials.Username, basicCredentials.Password);
+                var isAuthenticated = Membership.ValidateUser(basicCredentials.Username, basicCredentials.Password);
 
                 if (isAuthenticated)
                 {

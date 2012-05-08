@@ -169,6 +169,7 @@
     <Compile Include="Infrastructure\Controllers\FatApiController.cs" />
     <Compile Include="Infrastructure\Controllers\FatController.cs" />
     <Compile Include="Infrastructure\Filters\BasicAuthorizeAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\RemoteRequiresHttpsAttribute.cs" />
     <Compile Include="Infrastructure\Formatters\JsonDotNetFormatter.cs" />
     <Compile Include="Infrastructure\Modules\SuppressFormsAuthenticationRedirectModule.cs" />
     <Compile Include="Infrastructure\Validation\ModelStateExtensions.cs" />

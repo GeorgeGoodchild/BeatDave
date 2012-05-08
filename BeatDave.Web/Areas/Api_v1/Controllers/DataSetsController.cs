@@ -1,19 +1,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Web;
+using System.Web.Http;
 using BeatDave.Web.Areas.Api_v1.Models;
 using BeatDave.Web.Infrastructure;
 using BeatDave.Web.Models;
 using Raven.Client.Linq;
-using System.Web.Http;
-using System.Web.Security;
 
 namespace BeatDave.Web.Areas.Api_v1.Controllers
-{
+{    
+    [BasicAuthorize]
     public class DataSetsController : FatApiController
     {
         // GET /Api/v1/DataSets
-        [BasicAuthorize]
         public HttpResponseMessage<List<DataSetView>> Get(string q = "", int skip = DefaultSkip, int take = DefaultTake)
         {
             var dataSets = base.RavenSession.Query<DataSet>()
@@ -28,7 +28,6 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         }
 
         // GET /Api/v1/DataSets/33
-        [Authorize]
         public HttpResponseMessage<DataSetView> Get(int dataSetId)
         {
             if (dataSetId <= 0)
@@ -39,6 +38,9 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             if (dataSet == null)
                 return NotFound<DataSetView>(null);
 
+            if (dataSet.OwnerId != HttpContext.Current.User.Identity.Name)
+                return Forbidden<DataSetView>(null);
+
             var dataSetView = dataSet.MapTo<DataSetView>();
 
             return Ok(dataSetView);
@@ -47,7 +49,6 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
 
 
         // POST /Api/v1/DataSets
-        [Authorize]
         public HttpResponseMessage<DataSetView> Post(DataSetInput dataSetInput)
         {
             if (ModelState.IsValid == false)
@@ -66,7 +67,6 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
 
 
         // PUT /Api/v1/DataSets/33
-        [Authorize]
         public HttpResponseMessage Put([FromUri]int? dataSetId, DataSetInput dataSetInput)
         {
             // HACK: Once out of beta the dataSetId parameter should be bound from the Url rather than the request body
@@ -90,7 +90,6 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
 
 
         // DELETE /Api/v1/DataSets/5
-        [Authorize]
         public HttpResponseMessage Delete(int dataSetId)
         {
             if (dataSetId <= 0)

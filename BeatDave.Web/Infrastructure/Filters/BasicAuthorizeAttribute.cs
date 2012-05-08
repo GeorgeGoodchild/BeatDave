@@ -11,7 +11,7 @@ using System.Web.Security;
 namespace BeatDave.Web.Infrastructure
 {
     public class BasicAuthorizeAttribute : AuthorizeAttribute
-    {
+    {        
         // C'tor
         public BasicAuthorizeAttribute()
         { }
@@ -60,12 +60,15 @@ namespace BeatDave.Web.Infrastructure
 
                 if (isAuthenticated)
                 {
-                    principal = new GenericPrincipal(new GenericIdentity(basicCredentials.Username), System.Web.Security.Roles.GetRolesForUser(basicCredentials.Username));
+                    var identity = new GenericIdentity(basicCredentials.Username);
+                    var roles = System.Web.Security.Roles.GetRolesForUser(basicCredentials.Username);
+
+                    principal = new GenericPrincipal(identity, roles); // out parameter
                     return true;
                 }                
             }
 
-            principal = null;
+            principal = null; // out parameter
             return false;
         }
 

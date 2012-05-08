@@ -104,5 +104,24 @@ namespace BeatDave.Web.Infrastructure
                 RequestMessage = this.Request
             };
         }
+
+
+        protected HttpResponseMessage Forbidden()
+        {
+            return new HttpResponseMessage()
+            {
+                StatusCode = HttpStatusCode.Forbidden,
+                RequestMessage = this.Request
+            };
+        }
+
+        protected HttpResponseMessage<T> Forbidden<T>(T model)
+        {
+            return new HttpResponseMessage<T>(model)
+            {
+                StatusCode = HttpStatusCode.Forbidden,
+                RequestMessage = this.Request
+            };
+        }
     }
 }

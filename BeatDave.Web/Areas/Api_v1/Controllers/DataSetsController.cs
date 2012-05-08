@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
@@ -9,22 +8,25 @@ using BeatDave.Web.Models;
 using Raven.Client.Linq;
 
 namespace BeatDave.Web.Areas.Api_v1.Controllers
-{    
+{
     [BasicAuthorize]
     public class DataSetsController : FatApiController
     {
         // GET /Api/v1/DataSets
-        public HttpResponseMessage<List<DataSetView>> Get(string q = "", int skip = DefaultSkip, int take = DefaultTake)
+        public HttpResponseMessage Get(string q = "", int skip = DefaultSkip, int take = DefaultTake, string fields = "")
         {
             var dataSets = base.RavenSession.Query<DataSet>()
                                             .Skip(skip)
                                             .Take(take)
                                             .ToArray();
 
-            var dataSetViews = from ds in dataSets
-                               select ds.MapTo<DataSetView>();
+            var fieldsArray = fields.Split(new[] { ' ', '+' });
 
-            return Ok(dataSetViews.ToList());
+            var dataSetViews = from ds in dataSets
+                               select ds.MapTo<DataSetView>()
+                                        .Squash(fieldsArray);
+
+            return Ok(dataSetViews);
         }
 
         // GET /Api/v1/DataSets/33

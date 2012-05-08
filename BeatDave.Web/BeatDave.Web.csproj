@@ -168,6 +168,7 @@
     <Compile Include="Infrastructure\AutoMapper\Resolvers\RavenIdResolver.cs" />
     <Compile Include="Infrastructure\Controllers\FatApiController.cs" />
     <Compile Include="Infrastructure\Controllers\FatController.cs" />
+    <Compile Include="Infrastructure\Extensions\DyanmicExtensions.cs" />
     <Compile Include="Infrastructure\Filters\BasicAuthorizeAttribute.cs" />
     <Compile Include="Infrastructure\Filters\RemoteRequiresHttpsAttribute.cs" />
     <Compile Include="Infrastructure\Formatters\JsonDotNetFormatter.cs" />

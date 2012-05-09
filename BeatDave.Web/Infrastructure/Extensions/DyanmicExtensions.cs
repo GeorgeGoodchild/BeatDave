@@ -3,6 +3,8 @@ namespace BeatDave.Web.Infrastructure
 {
     using System.Collections.Generic;
     using System.Dynamic;
+    using System.Linq;
+    using System.Reflection;
 
     public static class DyanmicExtensions
     {
@@ -10,11 +12,15 @@ namespace BeatDave.Web.Infrastructure
         {
             dynamic d = new ExpandoObject();
             var dic = d as IDictionary<string, object>;
-
-            foreach (var field in fields)
+            
+            foreach (var field in fields.Select(x => x.Trim()).Distinct())
             {
-                var trimmedField = field.Trim();
-                dic[trimmedField] = typeof(T).GetProperty(trimmedField).GetValue(item, null);
+                var property = typeof(T).GetProperty(field, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+
+                if (property != null)
+                {
+                    dic[field] = property.GetValue(item, null);
+                }
             }
 
             return d;

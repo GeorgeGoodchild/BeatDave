@@ -1,9 +1,9 @@
 ﻿
 namespace BeatDave.Web.Models
 {
-    public class TransforedDataSet
+    public class TransforedLogBook
     {
-        public string DataSetId { get; set; }
+        public string LogBookId { get; set; }
         public Transformer Transfomer { get; set; }
     }
 }

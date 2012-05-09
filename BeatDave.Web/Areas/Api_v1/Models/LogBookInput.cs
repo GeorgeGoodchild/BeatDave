@@ -5,9 +5,9 @@ using BeatDave.Web.Models;
 
 namespace BeatDave.Web.Areas.Api_v1.Models
 {
-    public class DataSetInput
+    public class LogBookInput
     {
-        [Obsolete] public int DataSetId { get; set; }
+        [Obsolete] public int LogBookId { get; set; }
 
         [Required]
         public string Title { get; set; }

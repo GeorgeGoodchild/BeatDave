@@ -2,9 +2,9 @@
 
 namespace BeatDave.Web.Areas.Api_v1.Models
 {
-    public class DataPointInput
+    public class RecordInput
     {
-        [Obsolete] public int DataSetId { get; set; }
+        [Obsolete] public int LogBookId { get; set; }
         public int Id { get; set; }
         public double Value { get; set; }
         public DateTime OccurredOn { get; set; }

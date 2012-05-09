@@ -16,7 +16,7 @@ namespace BeatDave.Web.Models
     }
 
     [JsonObject(IsReference = true)] 
-    public class DataSet
+    public class LogBook
     {
         // Properties
         public string Id { get; set; }
@@ -25,7 +25,7 @@ namespace BeatDave.Web.Models
         public List<string> Tags { get; set; }
 
         public Units Units { get; set; }
-        private List<DataPoint> DataPoints { get; set; }
+        private List<Record> Records { get; set; }
 
         public string OwnerId { get; set; }
         public List<ISocialNetworkAccount> AutoShareOn { get; set; }
@@ -33,36 +33,36 @@ namespace BeatDave.Web.Models
 
 
         // C'tor
-        public DataSet()
+        public LogBook()
         { }
 
 
         // Public Members
-        public IEnumerable<DataPoint> GetDataPoints()
+        public IEnumerable<Record> GetRecords()
         {
-            if (this.DataPoints == null)
-                this.DataPoints = new List<DataPoint>();
+            if (this.Records == null)
+                this.Records = new List<Record>();
 
-            return new ReadOnlyCollection<DataPoint>(this.DataPoints);
+            return new ReadOnlyCollection<Record>(this.Records);
         }
 
-        public void AddDataPoint(DataPoint dp)
+        public void AddRecord(Record r)
         {            
-            if (this.DataPoints == null) 
-                this.DataPoints = new List<DataPoint>();
+            if (this.Records == null) 
+                this.Records = new List<Record>();
 
-            dp.DataSet = this;
-            dp.Id = this.DataPoints.Count == 0 ? 1 : this.DataPoints.Max(x => x.Id) + 1;
+            r.LogBook = this;
+            r.Id = this.Records.Count == 0 ? 1 : this.Records.Max(x => x.Id) + 1;
 
-            this.DataPoints.Add(dp);
+            this.Records.Add(r);
         }
 
-        public void RemoveDataPoint(DataPoint dp)
+        public void RemoveRecord(Record r)
         {
-            if (this.DataPoints == null)
+            if (this.Records == null)
                 return;
 
-            this.DataPoints.Remove(dp);
+            this.Records.Remove(r);
         }
     }
 }

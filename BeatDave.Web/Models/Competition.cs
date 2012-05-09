@@ -8,7 +8,7 @@ namespace BeatDave.Web.Models
         public string Id { get; set; }
         public string Title { get; set; }
         public List<string> Tags { get; set; }
-        public List<TransforedDataSet> Competitors { get; set; }
+        public List<TransforedLogBook> Competitors { get; set; }
         public Units CompetitionUnits { get; set; }
         public Visibility Visibility { get; set; }
     }

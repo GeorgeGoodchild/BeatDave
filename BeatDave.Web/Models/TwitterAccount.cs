@@ -8,7 +8,7 @@ namespace BeatDave.Web.Models
             get { return "Twitter"; }
         }
 
-        public bool Share(DataPoint dataPoint)
+        public bool Share(Record record)
         {
             throw new System.NotImplementedException();
         }        

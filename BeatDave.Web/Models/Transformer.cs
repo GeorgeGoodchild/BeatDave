@@ -5,18 +5,18 @@ namespace BeatDave.Web.Models
 
     public class Transformer
     {
-        public DateRange IncludeDataPointsInRange { get; set; }
-        public TimeSpan FirstDataPointOffset { get; set; }
+        public DateRange IncludeRecordsInRange { get; set; }
+        public TimeSpan FirstRecordOffset { get; set; }
         public double UnitsMultiplier { get; set; }
 
-        public DataPoint Transform(DataPoint dp)
+        public Record Transform(Record r)
         {
-            return new DataPoint
+            return new Record
             {
-                DataSet = dp.DataSet,
-                Id = dp.Id,
-                OccurredOn = dp.OccurredOn.Add(this.FirstDataPointOffset),
-                Value = dp.Value * UnitsMultiplier
+                LogBook = r.LogBook,
+                Id = r.Id,
+                OccurredOn = r.OccurredOn.Add(this.FirstRecordOffset),
+                Value = r.Value * UnitsMultiplier
             };
         }
     }

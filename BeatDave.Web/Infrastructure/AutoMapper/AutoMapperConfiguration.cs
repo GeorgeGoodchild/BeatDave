@@ -10,7 +10,7 @@ namespace BeatDave.Web.Infrastructure
             Mapper.CreateMap<string, MvcHtmlString>().ConvertUsing<MvcHtmlStringConverter>();
             
             // TODO: Use reflection to add all profiles (or some IoC container or somethin')
-            Mapper.AddProfile<DataSetProfile>();
+            Mapper.AddProfile<LogBookProfile>();
             Mapper.AddProfile<UserProfile>();
         }
     }

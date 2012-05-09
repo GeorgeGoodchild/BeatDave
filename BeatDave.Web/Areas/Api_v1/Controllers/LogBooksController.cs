@@ -54,7 +54,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
 
 
         // POST /Api/v1/LogBooks
-        public HttpResponseMessage<LogBookView> Post(LogBookInput logBookInput)
+        public HttpResponseMessage Post(LogBookInput logBookInput)
         {
             if (ModelState.IsValid == false)
                 return BadRequest(ModelState.FirstErrorMessage());

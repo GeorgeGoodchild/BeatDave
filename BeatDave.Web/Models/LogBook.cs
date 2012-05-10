@@ -25,7 +25,7 @@ namespace BeatDave.Web.Models
         public List<string> Tags { get; set; }
 
         public Units Units { get; set; }
-        private List<Record> Records { get; set; }
+        private List<Entry> Entries { get; set; }
 
         public string OwnerId { get; set; }
         public List<ISocialNetworkAccount> AutoShareOn { get; set; }
@@ -38,31 +38,31 @@ namespace BeatDave.Web.Models
 
 
         // Public Members
-        public IEnumerable<Record> GetRecords()
+        public IEnumerable<Entry> GetEntries()
         {
-            if (this.Records == null)
-                this.Records = new List<Record>();
+            if (this.Entries == null)
+                this.Entries = new List<Entry>();
 
-            return new ReadOnlyCollection<Record>(this.Records);
+            return new ReadOnlyCollection<Entry>(this.Entries);
         }
 
-        public void AddRecord(Record r)
+        public void AddEntry(Entry e)
         {            
-            if (this.Records == null) 
-                this.Records = new List<Record>();
+            if (this.Entries == null) 
+                this.Entries = new List<Entry>();
 
-            r.LogBook = this;
-            r.Id = this.Records.Count == 0 ? 1 : this.Records.Max(x => x.Id) + 1;
+            e.LogBook = this;
+            e.Id = this.Entries.Count == 0 ? 1 : this.Entries.Max(x => x.Id) + 1;
 
-            this.Records.Add(r);
+            this.Entries.Add(e);
         }
 
-        public void RemoveRecord(Record r)
+        public void RemoveEntry(Entry e)
         {
-            if (this.Records == null)
+            if (this.Entries == null)
                 return;
 
-            this.Records.Remove(r);
+            this.Entries.Remove(e);
         }
     }
 }

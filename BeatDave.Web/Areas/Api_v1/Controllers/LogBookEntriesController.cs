@@ -7,9 +7,9 @@ using BeatDave.Web.Models;
 
 namespace BeatDave.Web.Areas.Api_v1.Controllers
 {
-    public class RecordsController : FatApiController
+    public class LogBookEntriesController : FatApiController
     {
-        // GET /Api/v1/LogBooks/33/Records
+        // GET /Api/v1/LogBooks/33/Entries
         public HttpResponseMessage Get(int logBookId)
         {
             if (logBookId <= 0)
@@ -20,48 +20,48 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             if (logBook == null)
                 return NotFound();
 
-            var recordViews = from r in logBook.GetRecords()
-                              select r.MapTo<LogBookView.RecordView>();
+            var entryViews = from r in logBook.GetEntries()
+                             select r.MapTo<LogBookView.EntryView>();
 
-            return Ok(recordViews.ToList());
+            return Ok(entryViews.ToList());
         }
 
-        // GET /Api/v1/LogBookss/33/Records/1
-        public HttpResponseMessage Get(int logBookId, int recordId)
+        // GET /Api/v1/LogBookss/33/Entries/1
+        public HttpResponseMessage Get(int logBookId, int entryId)
         {
             if (logBookId <= 0)
                 return BadRequest("Log Book Id is missing");
 
-            if (recordId <= 0)
-                return BadRequest("Record Id is missing");
+            if (entryId <= 0)
+                return BadRequest("Entry Id is missing");
 
             var logBook = base.RavenSession.Load<LogBook>(logBookId);
 
             if (logBook == null) 
                 return NotFound();
 
-            var records = from r in logBook.GetRecords()
-                          where r.Id == recordId
+            var entries = from r in logBook.GetEntries()
+                          where r.Id == entryId
                           select r;
 
-            var record = records.SingleOrDefault();
+            var entry = entries.SingleOrDefault();
 
-            if (record == null)
+            if (entry == null)
                 return NotFound();
 
-            var recordView = record.MapTo<LogBookView.RecordView>();
+            var entryView = entry.MapTo<LogBookView.EntryView>();
 
-            return Ok(recordView);
+            return Ok(entryView);
         }
 
 
 
-        // POST /Api/v1/LogBooks/33/Records
-        public HttpResponseMessage Post([FromUri]int? logBookId, RecordInput recordInput)
+        // POST /Api/v1/LogBooks/33/Entries
+        public HttpResponseMessage Post([FromUri]int? logBookId, EntryInput entryInput)
         {
             // HACK: Once out of beta the logBookId parameter should be bound from the Url rather than the request body
             //       Stop the parameter being nullable too
-            if (logBookId == null) logBookId = recordInput.LogBookId;
+            if (logBookId == null) logBookId = entryInput.LogBookId;
 
             if (logBookId <= 0)
                 return BadRequest("Log Book Id is missing");
@@ -74,25 +74,25 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             if (logBook == null)
                 return NotFound();
 
-            var record = new Record();
-            recordInput.MapToInstance(record);
-            logBook.AddRecord(record);
+            var entry = new Entry();
+            entryInput.MapToInstance(entry);
+            logBook.AddEntry(entry);
 
             base.RavenSession.Store(logBook);
 
-            var recordView = record.MapTo<LogBookView.RecordView>();
+            var entryView = entry.MapTo<LogBookView.EntryView>();
 
-            return Created(recordView);
+            return Created(entryView);
         }
 
 
 
-        // PUT /Api/v1/LogBooks/33/Records
-        public HttpResponseMessage Put([FromUri]int? logBookId, RecordInput recordInput)
+        // PUT /Api/v1/LogBooks/33/Entries
+        public HttpResponseMessage Put([FromUri]int? logBookId, EntryInput entryInput)
         {
             // HACK: Once out of beta the logBookId parameter should be bound from the Url rather than the request body
             //       Stop the parameter being nullable too
-            if (logBookId == null) logBookId = recordInput.LogBookId;
+            if (logBookId == null) logBookId = entryInput.LogBookId;
 
             if (logBookId <= 0)
                 return BadRequest("Log Book Id is missing");
@@ -105,40 +105,40 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             if (logBook == null)
                 return NotFound();
 
-            var record = logBook.GetRecords().SingleOrDefault(x=> x.Id == recordInput.Id);
+            var entry = logBook.GetEntries().SingleOrDefault(x=> x.Id == entryInput.Id);
 
-            if (record == null)
+            if (entry == null)
                 return NotFound();
 
-            recordInput.MapToInstance(record);
+            entryInput.MapToInstance(entry);
             
-            var recordView = record.MapTo<LogBookView.RecordView>();
+            var entryView = entry.MapTo<LogBookView.EntryView>();
 
-            return Created(recordView);
+            return Created(entryView);
         }
 
 
 
         // DELETE /Api/v1/LogBooks/5
-        public HttpResponseMessage Delete(int logBookId, int recordId)
+        public HttpResponseMessage Delete(int logBookId, int entryId)
         {
             if (logBookId <= 0)
                 return BadRequest("Log Book Id is missing");
 
-            if (recordId <= 0)
-                return BadRequest("Record Id is missing");
+            if (entryId <= 0)
+                return BadRequest("Entry Id is missing");
 
             var logBook = base.RavenSession.Load<LogBook>(logBookId);
 
             if (logBook == null)
                 return NotFound();
 
-            var record = logBook.GetRecords().SingleOrDefault(x => x.Id == recordId);
+            var entry = logBook.GetEntries().SingleOrDefault(x => x.Id == entryId);
 
-            if (record == null)
+            if (entry == null)
                 return NotFound();
 
-            logBook.RemoveRecord(record);
+            logBook.RemoveEntry(entry);
 
             return Ok();
         }

@@ -2,7 +2,7 @@
 
 namespace BeatDave.Web.Areas.Api_v1.Models
 {
-    public class RecordInput
+    public class EntryInput
     {
         [Obsolete] public int LogBookId { get; set; }
         public int Id { get; set; }

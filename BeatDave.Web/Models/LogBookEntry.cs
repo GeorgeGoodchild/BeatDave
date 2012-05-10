@@ -3,7 +3,7 @@ namespace BeatDave.Web.Models
 {
     using System;
 
-    public class Record    
+    public class Entry    
     {
         public LogBook LogBook { get; set; }
         public int Id { get; set; }

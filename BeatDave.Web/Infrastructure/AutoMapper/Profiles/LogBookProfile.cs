@@ -19,7 +19,7 @@ namespace BeatDave.Web.Infrastructure
 
             Mapper.CreateMap<LogBookInput.UnitsInput, Units>();
 
-            Mapper.CreateMap<RecordInput, Record>()
+            Mapper.CreateMap<EntryInput, Entry>()
                 .ForMember(t => t.Id, o => o.Ignore())
                 .ForMember(t => t.LogBook, o => o.Ignore());
 
@@ -32,7 +32,7 @@ namespace BeatDave.Web.Infrastructure
 
             Mapper.CreateMap<Units, LogBookView.UnitsView>();
             
-            Mapper.CreateMap<Record, LogBookView.RecordView>();
+            Mapper.CreateMap<Entry, LogBookView.EntryView>();
             
             Mapper.CreateMap<ISocialNetworkAccount, LogBookView.SocialNetworkAccountView>()
                 .ForMember(t => t.NetworkName, o => o.MapFrom(s => s.SocialNetworkName))

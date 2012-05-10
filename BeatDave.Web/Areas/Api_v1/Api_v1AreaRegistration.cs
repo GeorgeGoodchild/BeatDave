@@ -8,15 +8,10 @@ namespace BeatDave.Web.Areas.Api_v1
         public override string AreaName { get { return "Api_v1"; } }
 
         public override void RegisterArea(AreaRegistrationContext context)
-        {
-            //context.Routes.MapHttpRoute(name: "Api_v1_Default",
-            //                            routeTemplate: "api/v1/{controller}/{id}",
-            //                            defaults: new { id = RouteParameter.Optional });
-
-
-            context.Routes.MapHttpRoute(name: "Api_v1_LogBooks",    routeTemplate: "api/v1/LogBooks/{logBookId}",                           defaults: new { controller = "LogBooks", logBookId = RouteParameter.Optional });
-            context.Routes.MapHttpRoute(name: "Api_v1_Records",     routeTemplate: "api/v1/LogBooks/{logBookId}/Records/{recordId}",        defaults: new { controller = "Records", recordId = RouteParameter.Optional });
-            context.Routes.MapHttpRoute(name: "Api_v1_Users",       routeTemplate: "api/v1/Users/{username}",                               defaults: new { controller = "Users", username = RouteParameter.Optional });
+        {            
+            context.Routes.MapHttpRoute(name: "Api_v1_LogBooks",        routeTemplate: "api/v1/LogBooks/{logBookId}",                   defaults: new { controller = "LogBooks",        logBookId = RouteParameter.Optional });
+            context.Routes.MapHttpRoute(name: "Api_v1_LogBookEntries",  routeTemplate: "api/v1/LogBooks/{logBookId}/Entries/{entryId}", defaults: new { controller = "LogBookEntries",  entryId = RouteParameter.Optional });
+            context.Routes.MapHttpRoute(name: "Api_v1_Users",           routeTemplate: "api/v1/Users/{username}",                       defaults: new { controller = "Users",           username = RouteParameter.Optional });
         }
     }
 }

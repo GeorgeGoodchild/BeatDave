@@ -147,11 +147,11 @@
   <ItemGroup>
     <Compile Include="Areas\Api_v1\Api_v1AreaRegistration.cs" />
     <Compile Include="Areas\Api_v1\Controllers\UsersController.cs" />
-    <Compile Include="Areas\Api_v1\Controllers\RecordsController.cs" />
+    <Compile Include="Areas\Api_v1\Controllers\LogBookEntriesController.cs" />
     <Compile Include="Areas\Api_v1\Controllers\LogBooksController.cs" />
     <Compile Include="Areas\Api_v1\Models\UserView.cs" />
     <Compile Include="Areas\Api_v1\Models\UserInput.cs" />
-    <Compile Include="Areas\Api_v1\Models\RecordInput.cs" />
+    <Compile Include="Areas\Api_v1\Models\LogBookEntryInput.cs" />
     <Compile Include="Areas\Api_v1\Models\LogBookInput.cs" />
     <Compile Include="Areas\Api_v1\Models\LogBookView.cs" />
     <Compile Include="Areas\App\AppAreaRegistration.cs" />
@@ -177,7 +177,7 @@
     <Compile Include="Models\Competition.cs" />
     <Compile Include="Models\TransforedDataSet.cs" />
     <Compile Include="Models\DateRange.cs" />
-    <Compile Include="Models\Record.cs" />
+    <Compile Include="Models\LogBookEntry.cs" />
     <Compile Include="Models\LogBook.cs" />
     <Compile Include="Models\FacebookAccount.cs" />
     <Compile Include="Models\Friend.cs" />

@@ -8,7 +8,7 @@ namespace BeatDave.Web.Models
             get { return "Facebook"; }
         }
 
-        public bool Share(Record record)
+        public bool Share(Entry entry)
         {
             throw new System.NotImplementedException();
         }

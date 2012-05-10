@@ -12,7 +12,7 @@ namespace BeatDave.Web.Areas.Api_v1.Models
         public List<string> Tags { get; set; }
 
         public UnitsView Units { get; set; }
-        public List<RecordView> Records { get; set; }
+        public List<EntryView> Entries { get; set; }
 
         public OwnerView Owner { get; set; }
         public List<SocialNetworkAccountView> AutoShareOn { get; set; }
@@ -28,7 +28,7 @@ namespace BeatDave.Web.Areas.Api_v1.Models
             public int Precision { get; set; }
         }
 
-        public class RecordView
+        public class EntryView
         {
             public int Id { get; set; }
             public double Value { get; set; }

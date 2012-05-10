@@ -39,7 +39,7 @@ namespace BeatDave.Web.Infrastructure
                 .ForMember(t => t.UserName, o => o.Ignore());   // TODO: This can't just be ignored
 
             Mapper.CreateMap<User, LogBookView.OwnerView>()
-                .ForMember(t => t.OwnerUsername, o => o.MapFrom(s => RavenIdResolver.Resolve(s.Username)))
+                .ForMember(t => t.OwnerUsername, o => o.MapFrom(s => RavenIdResolver.Resolve(s.Id)))
                 .ForMember(t => t.OwnerFullName, o => o.MapFrom(s => (s.FirstName + " " + s.LastName).Trim()));
         }
     }

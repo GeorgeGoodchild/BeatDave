@@ -10,16 +10,16 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
     public class UsersController : FatApiController
     {
         // POST /Api/v1/Users
-        public HttpResponseMessage<UserView> Post(UserInput userInput)
-        {
+        public HttpResponseMessage Post(UserInput userInput)
+        {            
             if (ModelState.IsValid == false)
-                return BadRequest<UserView>(null, ModelState.FirstErrorMessage());
+                return BadRequest(ModelState.FirstErrorMessage());
 
             var existingUser = base.RavenSession.Query<User>()
-                                                .SingleOrDefault(x => x.Username == userInput.Username);
+                                                .SingleOrDefault(x => x.Id == userInput.Username);
 
             if (existingUser != null)
-                return BadRequest<UserView>(null, string.Format("Username {0} is taken", userInput.Username));
+                return BadRequest(string.Format("Username {0} is taken", userInput.Username));
 
             MembershipCreateStatus status;
 

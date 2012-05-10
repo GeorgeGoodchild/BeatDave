@@ -151,7 +151,7 @@
     <Compile Include="Areas\Api_v1\Controllers\LogBooksController.cs" />
     <Compile Include="Areas\Api_v1\Models\UserView.cs" />
     <Compile Include="Areas\Api_v1\Models\UserInput.cs" />
-    <Compile Include="Areas\Api_v1\Models\LogBookEntryInput.cs" />
+    <Compile Include="Areas\Api_v1\Models\EntryInput.cs" />
     <Compile Include="Areas\Api_v1\Models\LogBookInput.cs" />
     <Compile Include="Areas\Api_v1\Models\LogBookView.cs" />
     <Compile Include="Areas\App\AppAreaRegistration.cs" />

@@ -6,6 +6,7 @@ namespace BeatDave.Web.Models
     using System.ComponentModel;
     using System.Linq;
     using Newtonsoft.Json;
+using System;
 
     public enum Visibility
     {
@@ -63,6 +64,29 @@ namespace BeatDave.Web.Models
                 return;
 
             this.Entries.Remove(e);
+        }
+
+
+        public bool IsOwnedBy(string username)
+        {
+            return string.Equals(this.OwnerId, username);
+        }
+
+        public bool IsVisibleTo(string username, Func<string, IEnumerable<Friend>> getOwnerFriends)
+        {
+            if (string.Equals(this.OwnerId, username) == true)
+                return true;
+
+            if (this.Visibility == Models.Visibility.Public || this.Visibility == Models.Visibility.PublicAnonymous)
+                return true;
+
+            var confirmedFriends = getOwnerFriends(this.OwnerId).Where(x => x.Confirmed)
+                                                                .Select(x => x.FriendUsername);
+
+            if (this.Visibility == Models.Visibility.FriendsOnly && confirmedFriends.Contains(username) == true)
+                return true;
+
+            return false;
         }
     }
 }

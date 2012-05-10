@@ -5,7 +5,8 @@ namespace BeatDave.Web.Models
 
     public class User
     {
-        public string Id { get; set; }        
+        public string Id { get; set; }
+        public string Username { get { return this.Id; } }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }

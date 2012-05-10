@@ -6,6 +6,7 @@ using BeatDave.Web.Areas.Api_v1.Models;
 using BeatDave.Web.Infrastructure;
 using BeatDave.Web.Models;
 using Raven.Client.Linq;
+using System;
 
 namespace BeatDave.Web.Areas.Api_v1.Controllers
 {
@@ -15,8 +16,14 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         // GET /Api/v1/LogBooks
         public HttpResponseMessage Get(string q = "", int skip = DefaultSkip, int take = DefaultTake, string fields = "")
         {
+            if (take > MaxTake)
+                return BadRequest(string.Concat("Maximum take value is ", take));
+
             var stats = new RavenQueryStatistics();
 
+            //
+            // TODO: Create an index that includes the user friends so we can verify it's visible to the current user
+            //
             var logBooks = base.RavenSession.Query<LogBook>()
                                             .Statistics(out stats)
                                             .Skip(skip)
@@ -25,8 +32,8 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
 
             var fieldsArray = fields.Split(new[] { ' ', '+' });
 
-            var logBookViews = from ds in logBooks
-                               select ds.MapTo<LogBookView>()
+            var logBookViews = from lb in logBooks
+                               select lb.MapTo<LogBookView>()
                                         .Squash(fieldsArray);
 
             return Ok(logBookViews);
@@ -35,16 +42,12 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         // GET /Api/v1/LogBooks/33
         public HttpResponseMessage Get(int logBookId)
         {
-            if (logBookId <= 0)
-                return BadRequest("Log Book Id is missing");
+            Func<HttpResponseMessage> response;
 
-            var logBook = base.RavenSession.Load<LogBook>(logBookId);
+            var logBook = GetVisibleLogBook(logBookId, () => base.RavenSession.Include<LogBook>(x => x.OwnerId).Load<LogBook>(logBookId), out response);
 
             if (logBook == null)
-                return NotFound();
-
-            if (logBook.OwnerId != HttpContext.Current.User.Identity.Name)
-                return Forbidden();
+                return response();
 
             var logBookView = logBook.MapTo<LogBookView>();
 
@@ -59,7 +62,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             if (ModelState.IsValid == false)
                 return BadRequest(ModelState.FirstErrorMessage());
 
-            var logBook = new LogBook() { OwnerId = HttpContext.Current.User.Identity.Name };
+            var logBook = new LogBook() { OwnerId = base.User.Identity.Name };
             logBookInput.MapToInstance(logBook);
 
             base.RavenSession.Store(logBook);
@@ -76,15 +79,18 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         {
             // HACK: Once out of beta the logBookId parameter should be bound from the Url rather than the request body
             //       Stop the parameter being nullable too
-            if (logBookId == null) logBookId = logBookInput.LogBookId;
-
-            if (logBookId <= 0)
-                return BadRequest("Log Book Id is missing");
+            if (logBookId.HasValue == false) logBookId = logBookInput.LogBookId;
 
             if (ModelState.IsValid == false)
                 return BadRequest(ModelState.FirstErrorMessage());
 
-            var logBook = base.RavenSession.Load<LogBook>(logBookId);
+            Func<HttpResponseMessage> response;
+
+            var logBook = GetOwnedLogBook(logBookId.Value, () => base.RavenSession.Load<LogBook>(logBookId), out response);
+
+            if (logBook == null)
+                return response();
+            
             logBookInput.MapToInstance(logBook);
            
             var logBookView = logBook.MapTo<LogBookView>();
@@ -97,14 +103,73 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         // DELETE /Api/v1/LogBooks/5
         public HttpResponseMessage Delete(int logBookId)
         {
-            if (logBookId <= 0)
-                return BadRequest("Log Book Id is missing");
+            Func<HttpResponseMessage> response;
 
-            var logBook = base.RavenSession.Load<LogBook>(logBookId);
+            var logBook = GetOwnedLogBook(logBookId, () => base.RavenSession.Load<LogBook>(logBookId), out response);
+
+            if (logBook == null)
+                return response();
 
             base.RavenSession.Delete(logBook);
 
             return Ok();
+        }
+
+
+
+        // Private Members        
+        [NonAction]
+        private LogBook GetOwnedLogBook(int logBookId, Func<LogBook> getLogBook, out Func<HttpResponseMessage> response)
+        {
+            if (logBookId <= 0)
+            {
+                response = () => BadRequest("Log Book Id is missing");
+                return null;
+            }
+
+            var logBook = getLogBook();
+
+            if (logBook == null)
+            {
+                response = () => NotFound();
+                return null;
+            }
+
+            if (logBook.IsOwnedBy(base.User.Identity.Name) == false)
+            {
+                response = () => Forbidden();
+                return null;
+            }
+
+            response = null;
+            return logBook;
+        }
+
+        [NonAction]
+        private LogBook GetVisibleLogBook(int logBookId, Func<LogBook> getLogBook, out Func<HttpResponseMessage> response)
+        {
+            if (logBookId <= 0)
+            {
+                response = () => BadRequest("Log Book Id is missing");
+                return null;
+            }
+
+            var logBook = getLogBook();
+
+            if (logBook == null)
+            {
+                response = () => NotFound();
+                return null;
+            }
+
+            if (logBook.IsVisibleTo(base.User.Identity.Name, (ownerId) => base.RavenSession.Load<User>(ownerId).Friends) == false)
+            {
+                response = () => Forbidden();
+                return null;
+            }
+
+            response = null;
+            return logBook;
         }
     }
 }

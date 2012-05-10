@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using Raven.Client;
+using System.Security.Principal;
 
 namespace BeatDave.Web.Infrastructure
 {
@@ -12,11 +13,13 @@ namespace BeatDave.Web.Infrastructure
         // Constants
         protected const int DefaultSkip = 0;
         protected const int DefaultTake = 25;
+        protected const int MaxTake = 1024;
 
         // Properties
         public static IDocumentStore DocumentStore { get; set; }
         public IDocumentSession RavenSession { get; set; }
-
+        public IPrincipal User { get { return HttpContext.Current.User; } }
+        
 
         // Event Overrides
         protected override void Initialize(HttpControllerContext controllerContext)

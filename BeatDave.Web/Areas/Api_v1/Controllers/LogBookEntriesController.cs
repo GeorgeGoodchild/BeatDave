@@ -4,6 +4,7 @@ using System.Web.Http;
 using BeatDave.Web.Areas.Api_v1.Models;
 using BeatDave.Web.Infrastructure;
 using BeatDave.Web.Models;
+using System;
 
 namespace BeatDave.Web.Areas.Api_v1.Controllers
 {
@@ -12,40 +13,33 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         // GET /Api/v1/LogBooks/33/Entries
         public HttpResponseMessage Get(int logBookId)
         {
-            if (logBookId <= 0)
-                return BadRequest("Log Book Id is missing");
+            Func<HttpResponseMessage> response;
 
-            var logBook = base.RavenSession.Load<LogBook>(logBookId);
+            var logBook = GetVisibleLogBook(logBookId, () => base.RavenSession.Include<LogBook>(x => x.OwnerId).Load<LogBook>(logBookId), out response);
 
             if (logBook == null)
-                return NotFound();
+                return response();
 
-            var entryViews = from r in logBook.GetEntries()
-                             select r.MapTo<LogBookView.EntryView>();
+            var entryViews = logBook.GetEntries()
+                                    .Select(x => x.MapTo<LogBookView.EntryView>())
+                                    .ToList();
 
-            return Ok(entryViews.ToList());
+            return Ok(entryViews);
         }
 
         // GET /Api/v1/LogBookss/33/Entries/1
         public HttpResponseMessage Get(int logBookId, int entryId)
         {
-            if (logBookId <= 0)
-                return BadRequest("Log Book Id is missing");
+            Func<HttpResponseMessage> response;
 
-            if (entryId <= 0)
-                return BadRequest("Entry Id is missing");
+            var logBook = GetVisibleLogBook(logBookId, () => base.RavenSession.Include<LogBook>(x => x.OwnerId).Load<LogBook>(logBookId), out response);
 
-            var logBook = base.RavenSession.Load<LogBook>(logBookId);
+            if (logBook == null)
+                return response();
 
-            if (logBook == null) 
-                return NotFound();
-
-            var entries = from r in logBook.GetEntries()
-                          where r.Id == entryId
-                          select r;
-
-            var entry = entries.SingleOrDefault();
-
+            var entry = logBook.GetEntries()
+                               .SingleOrDefault(x => x.Id == entryId);
+            
             if (entry == null)
                 return NotFound();
 
@@ -61,18 +55,14 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         {
             // HACK: Once out of beta the logBookId parameter should be bound from the Url rather than the request body
             //       Stop the parameter being nullable too
-            if (logBookId == null) logBookId = entryInput.LogBookId;
+            if (logBookId.HasValue == false) logBookId = entryInput.LogBookId;
 
-            if (logBookId <= 0)
-                return BadRequest("Log Book Id is missing");
+            Func<HttpResponseMessage> response;
 
-            if (ModelState.IsValid == false)
-                return BadRequest(ModelState.FirstErrorMessage());
-
-            var logBook = base.RavenSession.Load<LogBook>(logBookId);
+            var logBook = GetOwnedLogBook(logBookId.Value, () => base.RavenSession.Load<LogBook>(logBookId), out response);
 
             if (logBook == null)
-                return NotFound();
+                return response();
 
             var entry = new Entry();
             entryInput.MapToInstance(entry);
@@ -92,20 +82,17 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         {
             // HACK: Once out of beta the logBookId parameter should be bound from the Url rather than the request body
             //       Stop the parameter being nullable too
-            if (logBookId == null) logBookId = entryInput.LogBookId;
+            if (logBookId.HasValue == false) logBookId = entryInput.LogBookId;
 
-            if (logBookId <= 0)
-                return BadRequest("Log Book Id is missing");
+            Func<HttpResponseMessage> response;
 
-            if (ModelState.IsValid == false)
-                return BadRequest(ModelState.FirstErrorMessage());
-
-            var logBook = base.RavenSession.Load<LogBook>(logBookId);
+            var logBook = GetOwnedLogBook(logBookId.Value, () => base.RavenSession.Load<LogBook>(logBookId), out response);
 
             if (logBook == null)
-                return NotFound();
+                return response();
 
-            var entry = logBook.GetEntries().SingleOrDefault(x=> x.Id == entryInput.Id);
+            var entry = logBook.GetEntries()
+                               .SingleOrDefault(x=> x.Id == entryInput.Id);
 
             if (entry == null)
                 return NotFound();
@@ -122,18 +109,18 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         // DELETE /Api/v1/LogBooks/5
         public HttpResponseMessage Delete(int logBookId, int entryId)
         {
-            if (logBookId <= 0)
-                return BadRequest("Log Book Id is missing");
-
             if (entryId <= 0)
                 return BadRequest("Entry Id is missing");
+            
+            Func<HttpResponseMessage> response;
 
-            var logBook = base.RavenSession.Load<LogBook>(logBookId);
+            var logBook = GetOwnedLogBook(logBookId, () => base.RavenSession.Load<LogBook>(logBookId), out response);
 
             if (logBook == null)
-                return NotFound();
-
-            var entry = logBook.GetEntries().SingleOrDefault(x => x.Id == entryId);
+                return response();
+                                                
+            var entry = logBook.GetEntries()
+                               .SingleOrDefault(x => x.Id == entryId);
 
             if (entry == null)
                 return NotFound();
@@ -141,6 +128,63 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             logBook.RemoveEntry(entry);
 
             return Ok();
+        }
+
+
+
+        // Private Members        
+        [NonAction]
+        private LogBook GetOwnedLogBook(int logBookId, Func<LogBook> getLogBook, out Func<HttpResponseMessage> response)
+        {
+            if (logBookId <= 0)
+            {
+                response = () => BadRequest("Log Book Id is missing");
+                return null;
+            }
+
+            var logBook = getLogBook();
+
+            if (logBook == null)
+            {
+                response = () => NotFound();
+                return null;
+            }
+
+            if (logBook.IsOwnedBy(base.User.Identity.Name) == false)
+            {
+                response = () => Forbidden();
+                return null;
+            }
+
+            response = null;
+            return logBook;
+        }
+
+        [NonAction]
+        private LogBook GetVisibleLogBook(int logBookId, Func<LogBook> getLogBook, out Func<HttpResponseMessage> response)
+        {
+            if (logBookId <= 0)
+            {
+                response = () => BadRequest("Log Book Id is missing");
+                return null;
+            }
+
+            var logBook = getLogBook();
+
+            if (logBook == null)
+            {
+                response = () => NotFound();
+                return null;
+            }
+
+            if (logBook.IsVisibleTo(base.User.Identity.Name, (ownerId) => base.RavenSession.Load<User>(ownerId).Friends) == false)
+            {
+                response = () => Forbidden();
+                return null;
+            }
+
+            response = null;
+            return logBook;
         }
     }
 }

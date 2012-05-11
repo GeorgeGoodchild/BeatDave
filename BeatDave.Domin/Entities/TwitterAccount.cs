@@ -1,16 +1,16 @@
 ﻿
-namespace BeatDave.Web.Models
+namespace BeatDave.Domain
 {
-    public class FacebookAccount : ISocialNetworkAccount
+    public class TwitterAccount : ISocialNetworkAccount
     {
         public string SocialNetworkName
         {
-            get { return "Facebook"; }
+            get { return "Twitter"; }
         }
 
         public bool Share(Entry entry)
         {
             throw new System.NotImplementedException();
-        }
+        }        
     }
 }

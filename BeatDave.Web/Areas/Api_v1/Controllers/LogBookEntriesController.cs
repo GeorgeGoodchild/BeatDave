@@ -1,10 +1,10 @@
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
+using BeatDave.Domain;
 using BeatDave.Web.Areas.Api_v1.Models;
 using BeatDave.Web.Infrastructure;
-using BeatDave.Web.Models;
-using System;
 
 namespace BeatDave.Web.Areas.Api_v1.Controllers
 {
@@ -66,7 +66,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
 
             var entry = new Entry();
             entryInput.MapToInstance(entry);
-            logBook.AddEntry(entry);
+            logBook.LogEntry(entry);
 
             base.RavenSession.Store(logBook);
 
@@ -125,7 +125,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             if (entry == null)
                 return NotFound();
 
-            logBook.RemoveEntry(entry);
+            logBook.DeleteEntry(entry);
 
             return Ok();
         }

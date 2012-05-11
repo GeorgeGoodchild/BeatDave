@@ -174,18 +174,6 @@
     <Compile Include="Infrastructure\Formatters\JsonDotNetFormatter.cs" />
     <Compile Include="Infrastructure\Modules\SuppressFormsAuthenticationRedirectModule.cs" />
     <Compile Include="Infrastructure\Validation\ModelStateExtensions.cs" />
-    <Compile Include="Models\Competition.cs" />
-    <Compile Include="Models\TransforedDataSet.cs" />
-    <Compile Include="Models\DateRange.cs" />
-    <Compile Include="Models\LogBookEntry.cs" />
-    <Compile Include="Models\LogBook.cs" />
-    <Compile Include="Models\FacebookAccount.cs" />
-    <Compile Include="Models\Friend.cs" />
-    <Compile Include="Models\ISocialNetworkAccount.cs" />
-    <Compile Include="Models\Transformer.cs" />
-    <Compile Include="Models\TwitterAccount.cs" />
-    <Compile Include="Models\Units.cs" />
-    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="AnyOldIron\Any.Old.Iron" />
     <Content Include="Areas\App\Views\Home\Index.cshtml" />
@@ -295,6 +283,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\App\Views\Shared\Error.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BeatDave.Domin\BeatDave.Domin.csproj">
+      <Project>{9187F89F-FE63-4082-A227-630C0C9B970E}</Project>
+      <Name>BeatDave.Domin</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

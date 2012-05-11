@@ -1,9 +1,9 @@
 using System.Linq;
 using System.Net.Http;
 using System.Web.Security;
+using BeatDave.Domain;
 using BeatDave.Web.Areas.Api_v1.Models;
 using BeatDave.Web.Infrastructure;
-using BeatDave.Web.Models;
 
 namespace BeatDave.Web.Areas.Api_v1.Controllers
 {

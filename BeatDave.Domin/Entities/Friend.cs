@@ -1,5 +1,5 @@
 
-namespace BeatDave.Web.Models
+namespace BeatDave.Domain
 {
     public class Friend
     {

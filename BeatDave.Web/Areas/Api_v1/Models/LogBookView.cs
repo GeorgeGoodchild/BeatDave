@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using BeatDave.Web.Models;
+using BeatDave.Domain;
 
 namespace BeatDave.Web.Areas.Api_v1.Models
 {

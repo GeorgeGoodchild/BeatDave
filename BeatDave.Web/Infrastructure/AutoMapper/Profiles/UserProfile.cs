@@ -1,5 +1,5 @@
 using AutoMapper;
-using BeatDave.Web.Models;
+using BeatDave.Domain;
 using BeatDave.Web.Areas.Api_v1.Models;
 
 namespace BeatDave.Web.Infrastructure

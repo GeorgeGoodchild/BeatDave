@@ -1,5 +1,5 @@
 
-namespace BeatDave.Web.Models
+namespace BeatDave.Domain
 {
     using System.Collections.Generic;
 

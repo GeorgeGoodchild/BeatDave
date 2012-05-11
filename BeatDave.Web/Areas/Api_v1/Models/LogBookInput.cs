@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using BeatDave.Web.Models;
+using BeatDave.Domain;
 
 namespace BeatDave.Web.Areas.Api_v1.Models
 {

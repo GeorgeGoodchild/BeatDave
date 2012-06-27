@@ -7,7 +7,8 @@ namespace BeatDave.Web.Areas.Api_v1.Models
 {
     public class LogBookInput
     {
-        [Obsolete] public int LogBookId { get; set; }
+        [Obsolete] 
+        public int LogBookId { get; set; }
 
         [Required]
         public string Title { get; set; }
@@ -16,6 +17,7 @@ namespace BeatDave.Web.Areas.Api_v1.Models
 
         public List<string> Tags { get; set; }
 
+        [Required]
         public UnitsInput Units { get; set; }
 
         [Required]

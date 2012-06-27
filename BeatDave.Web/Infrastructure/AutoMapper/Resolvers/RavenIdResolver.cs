@@ -4,6 +4,13 @@ namespace BeatDave.Web.Infrastructure
 {
     public class RavenIdResolver
     {
+        public static string ResolveToString(string collectionName, string ravenId)
+        {
+            var match = ravenId.Replace(collectionName + "\\", string.Empty);
+
+            return match;
+        }
+        
         public static int Resolve(string ravenId)
         {
             var match = Regex.Match(ravenId, @"\d+");

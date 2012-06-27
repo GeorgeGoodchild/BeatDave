@@ -12,7 +12,7 @@ namespace BeatDave.Web.Infrastructure
             // UserInput -> User
             //
             Mapper.CreateMap<UserInput, User>()
-                .ForMember( t=> t.Id, o => o.MapFrom(s => s.Username))
+                .ForMember( t=> t.Id, o => o.MapFrom(s => "users\\" + s.Username))
                 .ForMember(t => t.AspNetId, o => o.Ignore())
                 .ForMember(t => t.Friends, o => o.Ignore())
                 .ForMember(t => t.SocialNetworkAccounts, o => o.Ignore());
@@ -21,7 +21,7 @@ namespace BeatDave.Web.Infrastructure
             // User -> UserView
             //
             Mapper.CreateMap<User, UserView>()
-                .ForMember(t => t.Username, o => o.MapFrom(s => s.Id))
+                .ForMember(t => t.Username, o => o.MapFrom(s => RavenIdResolver.ResolveToString("users", s.Id)))
                 .ForMember(t => t.FullName, o => o.Ignore());
 
             Mapper.CreateMap<Friend, UserView.FriendView>()

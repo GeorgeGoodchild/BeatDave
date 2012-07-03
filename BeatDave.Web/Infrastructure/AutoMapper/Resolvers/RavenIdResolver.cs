@@ -1,17 +1,12 @@
-﻿using System.Text.RegularExpressions;
-
+﻿
 namespace BeatDave.Web.Infrastructure
 {
-    public class RavenIdResolver
-    {
-        public static string ResolveToString(string collectionName, string ravenId)
-        {
-            var match = ravenId.Replace(collectionName + "\\", string.Empty);
+    using System;
+    using System.Text.RegularExpressions;
 
-            return match;
-        }
-        
-        public static int Resolve(string ravenId)
+    public class RavenIdResolver
+    {        
+        public static int ResolveToInt(string ravenId)
         {
             var match = Regex.Match(ravenId, @"\d+");
             var idStr = match.Value;
@@ -19,7 +14,7 @@ namespace BeatDave.Web.Infrastructure
             int id = int.Parse(idStr);
 
             if (id <= 0)
-                throw new System.InvalidOperationException("Id cannot be less than or equal to zero.");
+                throw new InvalidOperationException("Id cannot be less than or equal to zero.");
 
             return id;
         }

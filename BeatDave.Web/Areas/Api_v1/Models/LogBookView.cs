@@ -44,7 +44,6 @@ namespace BeatDave.Web.Areas.Api_v1.Models
         public class SocialNetworkAccountView
         {
             public string NetworkName { get; set; }
-            public string UserName { get; set; }
         }
     }
 }

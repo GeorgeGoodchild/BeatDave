@@ -3,7 +3,7 @@ namespace BeatDave.Domain
 {
     using System;
 
-    public class Entry    
+    public class LogBookEntry    
     {
         public LogBook LogBook { get; set; }
         public int Id { get; set; }

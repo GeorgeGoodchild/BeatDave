@@ -68,7 +68,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             if (logBook.IsOwnedBy(base.User.Identity.Name) == false)
                 return Forbidden();
 
-            var entry = new Entry();
+            var entry = new LogBookEntry();
             entryInput.MapToInstance(entry);
             logBook.LogEntry(entry);
 

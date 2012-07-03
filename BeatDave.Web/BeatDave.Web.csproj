@@ -172,7 +172,7 @@
     <Compile Include="Infrastructure\Filters\BasicAuthorizeAttribute.cs" />
     <Compile Include="Infrastructure\Filters\RemoteRequiresHttpsAttribute.cs" />
     <Compile Include="Infrastructure\Formatters\JsonDotNetFormatter.cs" />
-    <Compile Include="Infrastructure\Modules\SuppressFormsAuthenticationRedirectModule.cs" />
+    <Compile Include="Infrastructure\HttpModules\SuppressFormsAuthenticationRedirectModule.cs" />
     <Compile Include="Infrastructure\Validation\ModelStateExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="AnyOldIron\Any.Old.Iron" />

@@ -5,7 +5,6 @@ namespace BeatDave.Web.Infrastructure
 {
     // Problem:    401's returned from the API are being redirected to the Forms Auth logon page
     // Provenance: http://haacked.com/archive/2011/10/04/prevent-forms-authentication-login-page-redirect-when-you-donrsquot-want.aspx
-    //
     public class SuppressFormsAuthenticationRedirectModule : IHttpModule
     {
         // Static Properties

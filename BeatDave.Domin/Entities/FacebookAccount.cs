@@ -8,7 +8,7 @@ namespace BeatDave.Domain
             get { return "Facebook"; }
         }
 
-        public bool Share(Entry entry)
+        public bool Share(LogBookEntry entry)
         {
             throw new System.NotImplementedException();
         }

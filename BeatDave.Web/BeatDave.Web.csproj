@@ -285,9 +285,9 @@
     <Content Include="Areas\App\Views\Shared\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BeatDave.Domin\BeatDave.Domin.csproj">
+    <ProjectReference Include="..\BeatDave.Domin\BeatDave.Domain.csproj">
       <Project>{9187F89F-FE63-4082-A227-630C0C9B970E}</Project>
-      <Name>BeatDave.Domin</Name>
+      <Name>BeatDave.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

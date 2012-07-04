@@ -9,14 +9,14 @@ namespace BeatDave.Domain
         public TimeSpan FirstEntryOffset { get; set; }
         public double UnitsMultiplier { get; set; }
 
-        public LogBookEntry Transform(LogBookEntry r)
+        public LogBookEntry Transform(LogBookEntry entry)
         {
             return new LogBookEntry
             {
-                LogBook = r.LogBook,
-                Id = r.Id,
-                OccurredOn = r.OccurredOn.Add(this.FirstEntryOffset),
-                Value = r.Value * UnitsMultiplier
+                LogBook = entry.LogBook,
+                Id = entry.Id,
+                OccurredOn = entry.OccurredOn.Add(this.FirstEntryOffset),
+                Value = entry.Value * UnitsMultiplier
             };
         }
     }

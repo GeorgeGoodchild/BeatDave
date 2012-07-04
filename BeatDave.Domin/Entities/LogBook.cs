@@ -42,10 +42,9 @@ namespace BeatDave.Domain
         // Public Members
         public IEnumerable<LogBookEntry> GetEntries()
         {
-            if (this.Entries == null)
-                this.Entries = new List<LogBookEntry>();
+            var entries = this.Entries ?? new List<LogBookEntry>();
 
-            return new ReadOnlyCollection<LogBookEntry>(this.Entries);
+            return new ReadOnlyCollection<LogBookEntry>(entries);
         }
 
         public void LogEntry(LogBookEntry e)

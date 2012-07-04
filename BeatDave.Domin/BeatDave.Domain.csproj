@@ -8,8 +8,8 @@
     <ProjectGuid>{9187F89F-FE63-4082-A227-630C0C9B970E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BeatDave.Domin</RootNamespace>
-    <AssemblyName>BeatDave.Domin</AssemblyName>
+    <RootNamespace>BeatDave.Domain</RootNamespace>
+    <AssemblyName>BeatDave.Domain</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Comment.cs" />
+    <Compile Include="Events\CommentMadeEvent.cs" />
     <Compile Include="Events\EntryLoggedEvent.cs" />
     <Compile Include="Exceptions\UnauthorizedException.cs" />
     <Compile Include="Exceptions\DomainException.cs" />

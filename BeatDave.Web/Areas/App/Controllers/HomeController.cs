@@ -19,9 +19,9 @@ namespace BeatDave.Web.Areas.App.Controllers
                 Visibility = Visibility.PublicAnonymous
             };
 
-            logbook.LogEntry(new LogBookEntry { LogBook = logbook, OccurredOn = DateTime.Now.AddDays(-10), Value = 10 });
-            logbook.LogEntry(new LogBookEntry { LogBook = logbook, OccurredOn = DateTime.Now.AddDays(-5), Value = 5 });
-            logbook.LogEntry(new LogBookEntry { LogBook = logbook, OccurredOn = DateTime.Now.AddDays(0), Value = 0 });
+            logbook.LogEntry(new LogBookEntry { OccurredOn = DateTime.UtcNow.AddDays(-10), Value = 10 });
+            logbook.LogEntry(new LogBookEntry { OccurredOn = DateTime.UtcNow.AddDays(-5), Value = 5 });
+            logbook.LogEntry(new LogBookEntry { OccurredOn = DateTime.UtcNow.AddDays(0), Value = 0 });
 
             return View();
         }

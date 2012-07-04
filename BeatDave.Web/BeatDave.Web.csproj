@@ -285,7 +285,7 @@
     <Content Include="Areas\App\Views\Shared\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BeatDave.Domin\BeatDave.Domain.csproj">
+    <ProjectReference Include="..\BeatDave.Domain\BeatDave.Domain.csproj">
       <Project>{9187F89F-FE63-4082-A227-630C0C9B970E}</Project>
       <Name>BeatDave.Domain</Name>
     </ProjectReference>

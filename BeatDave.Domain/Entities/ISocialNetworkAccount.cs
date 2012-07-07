@@ -5,6 +5,6 @@ namespace BeatDave.Domain
     {
         string SocialNetworkName { get; }
 
-        bool Share(LogBookEntry entry);
+        bool Share(Entry entry);
     }
 }

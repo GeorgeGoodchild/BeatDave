@@ -58,7 +58,7 @@
     <Compile Include="Entities\Friend.cs" />
     <Compile Include="Entities\ISocialNetworkAccount.cs" />
     <Compile Include="Entities\LogBook.cs" />
-    <Compile Include="Entities\LogBookEntry.cs" />
+    <Compile Include="Entities\Entry.cs" />
     <Compile Include="Entities\TransforedDataSet.cs" />
     <Compile Include="Entities\Transformer.cs" />
     <Compile Include="Entities\TwitterAccount.cs" />

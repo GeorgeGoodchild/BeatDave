@@ -8,7 +8,7 @@ namespace BeatDave.Domain
             get { return "Twitter"; }
         }
 
-        public bool Share(LogBookEntry entry)
+        public bool Share(Entry entry)
         {
             throw new System.NotImplementedException();
         }        

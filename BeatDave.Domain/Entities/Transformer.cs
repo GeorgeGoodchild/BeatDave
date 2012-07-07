@@ -9,9 +9,9 @@ namespace BeatDave.Domain
         public TimeSpan FirstEntryOffset { get; set; }
         public double UnitsMultiplier { get; set; }
 
-        public LogBookEntry Transform(LogBookEntry entry)
+        public Entry Transform(Entry entry)
         {
-            return new LogBookEntry
+            return new Entry
             {
                 LogBook = entry.LogBook,
                 Id = entry.Id,

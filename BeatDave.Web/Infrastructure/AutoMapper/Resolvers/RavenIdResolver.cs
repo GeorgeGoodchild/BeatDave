@@ -6,7 +6,7 @@ namespace BeatDave.Web.Infrastructure
 
     public class RavenIdResolver
     {        
-        public static int ResolveToInt(string ravenId)
+        public static int Resolve(string ravenId)
         {
             var match = Regex.Match(ravenId, @"\d+");
             var idStr = match.Value;

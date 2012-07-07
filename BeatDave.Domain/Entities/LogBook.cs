@@ -27,7 +27,7 @@ namespace BeatDave.Domain
         public List<string> Tags { get; set; }
 
         public Units Units { get; set; }
-        private List<LogBookEntry> Entries { get; set; }
+        private List<Entry> Entries { get; set; }
 
         public string OwnerId { get; set; }
         public List<ISocialNetworkAccount> AutoShareOn { get; set; }
@@ -40,17 +40,17 @@ namespace BeatDave.Domain
 
 
         // Public Members
-        public IEnumerable<LogBookEntry> GetEntries()
+        public IEnumerable<Entry> GetEntries()
         {
-            var entries = this.Entries ?? new List<LogBookEntry>();
+            var entries = this.Entries ?? new List<Entry>();
 
-            return new ReadOnlyCollection<LogBookEntry>(entries);
+            return new ReadOnlyCollection<Entry>(entries);
         }
 
-        public void LogEntry(LogBookEntry e)
+        public void AddEntry(Entry e)
         {            
             if (this.Entries == null) 
-                this.Entries = new List<LogBookEntry>();
+                this.Entries = new List<Entry>();
 
             e.LogBook = this;
             e.Id = this.Entries.Count == 0 ? 1 : this.Entries.Max(x => x.Id) + 1;
@@ -60,7 +60,7 @@ namespace BeatDave.Domain
             DomainEvents.Raise(new EntryLoggedEvent(this, e));
         }
 
-        public void DeleteEntry(LogBookEntry e)
+        public void RemoveEntry(Entry e)
         {
             if (this.Entries == null)
                 return;

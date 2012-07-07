@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using BeatDave.Domain;
 
@@ -32,7 +31,15 @@ namespace BeatDave.Web.Areas.Api_v1.Models
         {
             public int Id { get; set; }
             public double Value { get; set; }
-            public DateTime OccurredOn { get; set; }
+            public DateTimeView OccurredOn { get; set; }
+            public List<CommentView> Comments { get; set; }
+        }
+
+        public class CommentView
+        {
+            public string Text { get; set; }
+            public DateTimeView CreatedOn { get; internal set; }
+            public string CreatedBy { get; set; }
         }
 
         public class OwnerView

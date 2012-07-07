@@ -7,7 +7,7 @@ using BeatDave.Web.Infrastructure;
 
 namespace BeatDave.Web.Areas.Api_v1.Controllers
 {
-    public class LogBookEntriesController : FatApiController
+    public class EntriesController : FatApiController
     {
         // GET /Api/v1/LogBooks/33/Entries
         public HttpResponseMessage Get(int logBookId)
@@ -68,9 +68,9 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             if (logBook.IsOwnedBy(base.User.Identity.Name) == false)
                 return Forbidden();
 
-            var entry = new LogBookEntry();
+            var entry = new Entry();
             entryInput.MapToInstance(entry);
-            logBook.LogEntry(entry);
+            logBook.AddEntry(entry);
 
             base.RavenSession.Store(logBook);
 
@@ -82,11 +82,12 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
 
 
         // PUT /Api/v1/LogBooks/33/Entries/1
-        public HttpResponseMessage Put([FromUri]int? logBookId, EntryInput entryInput)
+        public HttpResponseMessage Put([FromUri]int? logBookId, [FromUri]int? entryId, EntryInput entryInput)
         {
             // HACK: Once out of beta the logBookId parameter should be bound from the Url rather than the request body
             //       Stop the parameter being nullable too
             if (logBookId.HasValue == false) logBookId = entryInput.LogBookId;
+            if (entryId.HasValue == false) entryId = entryInput.Id;
 
             var logBook = base.RavenSession.Load<LogBook>(logBookId);
 
@@ -97,7 +98,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
                 return Forbidden();
 
             var entry = logBook.GetEntries()
-                               .SingleOrDefault(x=> x.Id == entryInput.Id);
+                               .SingleOrDefault(x=> x.Id == entryId);
 
             if (entry == null)
                 return NotFound();
@@ -131,7 +132,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             if (entry == null)
                 return NotFound();
 
-            logBook.DeleteEntry(entry);
+            logBook.RemoveEntry(entry);
 
             return Ok();
         }

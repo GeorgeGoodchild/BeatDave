@@ -22,7 +22,8 @@ namespace BeatDave.Web.Infrastructure
 
             Mapper.CreateMap<LogBookInput.UnitsInput, Units>();
 
-            Mapper.CreateMap<EntryInput, LogBookEntry>()
+            Mapper.CreateMap<EntryInput, Entry>()
+                .ForMember(t => t.OccurredOn, o => o.MapFrom(s => s.OccurredOn.ToUniversalTime()))
                 .ForMember(t => t.Id, o => o.Ignore())
                 .ForMember(t => t.LogBook, o => o.Ignore());
 
@@ -30,12 +31,16 @@ namespace BeatDave.Web.Infrastructure
             // Model -> LogBookView
             //
             Mapper.CreateMap<LogBook, LogBookView>()
-                .ForMember(t => t.Id, o => o.MapFrom(s => RavenIdResolver.ResolveToInt(s.Id)))
+                .ForMember(t => t.Id, o => o.MapFrom(s => RavenIdResolver.Resolve(s.Id)))
                 .ForMember(t => t.Owner, o => o.Ignore());
 
             Mapper.CreateMap<Units, LogBookView.UnitsView>();
-            
-            Mapper.CreateMap<LogBookEntry, LogBookView.EntryView>();
+
+            Mapper.CreateMap<Entry, LogBookView.EntryView>()
+                .ForMember(t => t.OccurredOn, o => o.MapFrom(s => DateTimeViewResolver.Resolve(s.OccurredOn)));
+
+            Mapper.CreateMap<Comment, LogBookView.CommentView>()
+                .ForMember(t => t.CreatedOn, o => o.MapFrom(s => DateTimeViewResolver.Resolve(s.CreatedOn)));
 
             Mapper.CreateMap<ISocialNetworkAccount, LogBookView.SocialNetworkAccountView>()
                 .ForMember(t => t.NetworkName, o => o.MapFrom(s => s.SocialNetworkName));

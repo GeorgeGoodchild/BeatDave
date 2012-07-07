@@ -8,9 +8,7 @@ namespace BeatDave.Web.Infrastructure
     public class AutoMapperConfiguration
     {
         public static void Configure()
-        {
-            Mapper.CreateMap<string, MvcHtmlString>().ConvertUsing<MvcHtmlStringConverter>();
-
+        {            
             var profiles = from t in Assembly.GetAssembly(typeof(AutoMapperConfiguration)).GetTypes()
                            where t.IsSubclassOf(typeof(Profile))
                            select t;

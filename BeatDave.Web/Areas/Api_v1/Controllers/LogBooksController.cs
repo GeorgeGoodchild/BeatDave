@@ -28,13 +28,18 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
                                             .Take(take)
                                             .ToArray();
 
-            var fieldsArray = fields.Split(new[] { ' ', '+' });
+            var fieldsArray = fields.Split(new[] { ' ', '+' })
+                                    .Where(x => string.IsNullOrWhiteSpace(x) == false);
 
             var logBookViews = from lb in logBooks
-                               select lb.MapTo<LogBookView>()
-                                        .SquashTo(fieldsArray);
+                               select lb.MapTo<LogBookView>();
 
-            return Ok(logBookViews);
+            if (fieldsArray.Count() == 0)
+                return Ok(logBookViews);
+
+            var squashedLogBooks = logBookViews.Select(x => x.SquashTo(fieldsArray));
+
+            return Ok(squashedLogBooks);
         }
 
         // GET /Api/v1/LogBooks/33

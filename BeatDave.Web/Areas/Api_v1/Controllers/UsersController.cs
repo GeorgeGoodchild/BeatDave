@@ -12,9 +12,14 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         // GET
         public HttpResponseMessage Get(string username)
         {
+            if (string.IsNullOrWhiteSpace(username))
+                return BadRequest("No username supplied");
+
             var user = base.RavenSession.Query<User>()
                                         .SingleOrDefault(x => x.Id == username);
 
+            if (user == null)
+                return NotFound();
 
             // TODO: Limit the amount of data that goes back if it's not the user making the request
             var userView = user.MapTo<UserView>();

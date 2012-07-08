@@ -8,7 +8,7 @@ namespace BeatDave.Web.Infrastructure
 
     public static class DyanmicExtensions
     {
-        public static dynamic SquashTo<T>(this T item, string[] fields)
+        public static dynamic SquashTo<T>(this T item, IEnumerable<string> fields)
         {
             dynamic d = new ExpandoObject();
             var dic = d as IDictionary<string, object>;

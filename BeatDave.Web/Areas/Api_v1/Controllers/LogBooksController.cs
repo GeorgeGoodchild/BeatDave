@@ -17,17 +17,19 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             if (take > MaxTake)
                 return BadRequest(string.Concat("Maximum take value is ", take));
 
-            var stats = new RavenQueryStatistics();
+            var stats = new RavenQueryStatistics();            
 
             //
-            // TODO: Create an index that includes the user friends so we can verify it's visible to the current user.  Currently Skip and Take will return the wrong number of results
+            // TODO: Create an index that includes the user friends so we can verify it's visible to the current user without all the ToArray() calls.  
+            //       Also, Skip and Take will return the wrong number of results at the moment
             //
             var logBooks = base.RavenSession.Query<LogBook>()
                                             .Statistics(out stats)
                                             .Skip(skip)
                                             .Take(take)
                                             .ToArray()
-                                            .Where(x => x.IsVisibleTo(User.Identity.Name, (ownerId) => RavenSession.Load<User>(ownerId).GetFriends()) == false);
+                                            .Where(x => x.IsVisibleTo(base.User.Identity.Name, (ownerId) => RavenSession.Load<User>(ownerId).GetFriends()))
+                                            .ToArray();
 
             var fieldsArray = fields.Split(new[] { ' ', '+' })
                                     .Where(x => string.IsNullOrWhiteSpace(x) == false);

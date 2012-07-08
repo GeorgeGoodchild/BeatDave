@@ -71,12 +71,12 @@ namespace BeatDave.Domain
 
         public bool IsOwnedBy(string username)
         {
-            return string.Equals(this.OwnerId, username);
+            return string.Equals(this.OwnerId, username, StringComparison.OrdinalIgnoreCase);
         }
 
         public bool IsVisibleTo(string username, Func<string, IEnumerable<Friend>> getOwnerFriends)
         {
-            if (string.Equals(this.OwnerId, username) == true)
+            if (string.Equals(this.OwnerId, username, StringComparison.OrdinalIgnoreCase) == true)
                 return true;
 
             if (this.Visibility == Domain.Visibility.Public || this.Visibility == Domain.Visibility.PublicAnonymous)

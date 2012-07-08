@@ -6,7 +6,9 @@ namespace BeatDave.Domain
     using System.Collections.ObjectModel;
     using System.Linq;
     using BeatDave.Domain.Infrastructure;
+    using Raven.Imports.Newtonsoft.Json;
 
+    [JsonObject(IsReference = true)] 
     public class Entry    
     {
         // Properties

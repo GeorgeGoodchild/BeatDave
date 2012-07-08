@@ -23,16 +23,22 @@ namespace BeatDave.Web.Infrastructure
             Mapper.CreateMap<LogBookInput.UnitsInput, Units>();
 
             Mapper.CreateMap<EntryInput, Entry>()
-                .ForMember(t => t.OccurredOn, o => o.MapFrom(s => s.OccurredOn.ToUniversalTime()))
                 .ForMember(t => t.Id, o => o.Ignore())
+                .ForMember(t => t.OccurredOn, o => o.MapFrom(s => s.OccurredOn.ToUniversalTime()))                
                 .ForMember(t => t.LogBook, o => o.Ignore());
+
+            Mapper.CreateMap<CommentInput, Comment<Entry>>()
+                .ForMember(t => t.Id, o => o.Ignore())
+                .ForMember(t => t.CommentOn, o => o.Ignore())
+                .ForMember(t => t.CreatedBy, o => o.MapFrom(s => HttpContext.Current.User.Identity.Name))
+                .ForMember(t => t.CreatedOn, o => o.Ignore());
 
             //
             // Model -> LogBookView
             //
             Mapper.CreateMap<LogBook, LogBookView>()
                 .ForMember(t => t.Id, o => o.MapFrom(s => RavenIdResolver.Resolve(s.Id)))
-                .ForMember(t => t.Owner, o => o.Ignore());
+                .ForMember(t => t.Owner, o => o.Ignore());  // TODO: Ouput the appropriate value based on Visibility
 
             Mapper.CreateMap<Units, LogBookView.UnitsView>();
 

@@ -18,8 +18,7 @@ namespace BeatDave.Web.Infrastructure
         // Properties
         public static IDocumentStore DocumentStore { get; set; }
         public IDocumentSession RavenSession { get; set; }
-        public IPrincipal User { get { return HttpContext.Current.User; } }
-        
+        public new IPrincipal User { get { return HttpContext.Current.User; } }  // TODO: Why isn't the ApiController.User field returning the correct value?
 
         // Event Overrides
         protected override void Initialize(HttpControllerContext controllerContext)

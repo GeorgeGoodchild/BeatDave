@@ -7,6 +7,7 @@ using BeatDave.Web.Infrastructure;
 
 namespace BeatDave.Web.Areas.Api_v1.Controllers
 {
+    [BasicAuthorize]
     public class EntriesController : FatApiController
     {
         // GET /Api/v1/LogBooks/33/Entries

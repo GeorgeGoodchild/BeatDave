@@ -136,7 +136,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\RegisterClientValidationExtensions.cs" />
     <Compile Include="Areas\Api_v1\Api_v1AreaRegistration.cs" />
     <Compile Include="Areas\Api_v1\Controllers\CommentsController.cs" />
     <Compile Include="Areas\Api_v1\Controllers\UsersController.cs" />

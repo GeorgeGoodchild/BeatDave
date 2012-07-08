@@ -9,6 +9,21 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
 {
     public class UsersController : FatApiController
     {
+        // GET
+        public HttpResponseMessage Get(string username)
+        {
+            var user = base.RavenSession.Query<User>()
+                                        .SingleOrDefault(x => x.Id == username);
+
+
+            // TODO: Limit the amount of data that goes back if it's not the user making the request
+            var userView = user.MapTo<UserView>();
+
+            return Ok(userView);
+        }
+
+
+
         // POST /Api/v1/Users
         public HttpResponseMessage Post(UserInput userInput)
         {            

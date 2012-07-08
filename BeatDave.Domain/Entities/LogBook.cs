@@ -7,7 +7,7 @@ namespace BeatDave.Domain
     using System.ComponentModel;
     using System.Linq;
     using BeatDave.Domain.Infrastructure;
-    using Newtonsoft.Json;
+    using Raven.Imports.Newtonsoft.Json;
 
     public enum Visibility
     {

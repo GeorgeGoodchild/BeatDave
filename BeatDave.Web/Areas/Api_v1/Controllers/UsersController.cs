@@ -32,7 +32,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
                                                        out status);
 
             if (status != MembershipCreateStatus.Success)
-                return BadRequest<UserView>(null, status.ToString());
+                return BadRequest(status.ToString());
 
             var user = new User() { AspNetId = membershipUser.ProviderUserKey.ToString() };
             userInput.MapToInstance(user);

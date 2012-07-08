@@ -1,4 +1,3 @@
-using System.Linq;
 using AutoMapper;
 using BeatDave.Domain;
 using BeatDave.Web.Areas.Api_v1.Models;
@@ -13,11 +12,8 @@ namespace BeatDave.Web.Infrastructure
             // UserInput -> User
             //
             Mapper.CreateMap<UserInput, User>()
-                .ForMember( t=> t.Id, o => o.MapFrom(s => s.Username))
-                .ForMember(t => t.AspNetId, o => o.Ignore())
-                .ForMember(t => t.Friends, o => o.Ignore())
-                .ForMember(t => t.SocialNetworkAccounts, o => o.Ignore());
-
+                .ForMember(t => t.Id, o => o.MapFrom(s => s.Username))
+                .ForMember(t => t.AspNetId, o => o.Ignore());
             //
             // User -> UserView
             //

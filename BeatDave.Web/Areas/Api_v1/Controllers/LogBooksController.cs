@@ -20,13 +20,14 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             var stats = new RavenQueryStatistics();
 
             //
-            // TODO: Create an index that includes the user friends so we can verify it's visible to the current user
+            // TODO: Create an index that includes the user friends so we can verify it's visible to the current user.  Currently Skip and Take will return the wrong number of results
             //
             var logBooks = base.RavenSession.Query<LogBook>()
                                             .Statistics(out stats)
                                             .Skip(skip)
                                             .Take(take)
-                                            .ToArray();
+                                            .ToArray()
+                                            .Where(x => x.IsVisibleTo(User.Identity.Name, (ownerId) => RavenSession.Load<User>(ownerId).GetFriends()) == false);
 
             var fieldsArray = fields.Split(new[] { ' ', '+' })
                                     .Where(x => string.IsNullOrWhiteSpace(x) == false);
@@ -51,7 +52,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             if (logBook == null)
                 return NotFound();
             
-            if (logBook.IsVisibleTo(base.User.Identity.Name, (ownerId) => base.RavenSession.Load<User>(ownerId).Friends) == false)
+            if (logBook.IsVisibleTo(base.User.Identity.Name, (ownerId) => base.RavenSession.Load<User>(ownerId).GetFriends()) == false)
                 return Forbidden();
 
             var logBookView = logBook.MapTo<LogBookView>();

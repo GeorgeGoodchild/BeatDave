@@ -86,6 +86,11 @@ namespace BeatDave.Web
             var settings = new JsonSerializerSettings();
             settings.Converters.Add(new IsoDateTimeConverter());
             settings.Converters.Add(new StringEnumConverter());
+
+            //
+            // Setting it at position [0] makes it the default formatter and will override the DataContratSerializer for JSON messages
+            // 
+            config.Formatters[0] = new JsonNetFormatter(settings);
         }
 
         private void InitializeDocumentStore()

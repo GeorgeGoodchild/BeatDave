@@ -18,7 +18,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             if (logBook == null)
                 return NotFound();
 
-            if (logBook.IsVisibleTo(base.User.Identity.Name, (ownerId) => base.RavenSession.Load<User>(ownerId).Friends) == false)
+            if (logBook.IsVisibleTo(base.User.Identity.Name, (ownerId) => base.RavenSession.Load<User>(ownerId).GetFriends()) == false)
                 return Forbidden();
             
             var entryViews = logBook.GetEntries()
@@ -37,7 +37,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             if (logBook == null)
                 return NotFound();
 
-            if (logBook.IsVisibleTo(base.User.Identity.Name, (ownerId) => base.RavenSession.Load<User>(ownerId).Friends) == false)
+            if (logBook.IsVisibleTo(base.User.Identity.Name, (ownerId) => base.RavenSession.Load<User>(ownerId).GetFriends()) == false)
                 return Forbidden();
 
             var entry = logBook.GetEntries()

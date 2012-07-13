@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeatDave.Web", "BeatDave.Web\BeatDave.Web.csproj", "{114B986B-34BE-473A-9EE1-2FAC5E18BB63}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeatDave.Web", "BeatDave.Web\BeatDave.Web.csproj", "{9A448F43-FE34-4D59-8F5E-C7389169995D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeatDave.Domain", "BeatDave.Domain\BeatDave.Domain.csproj", "{9187F89F-FE63-4082-A227-630C0C9B970E}"
 EndProject
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{114B986B-34BE-473A-9EE1-2FAC5E18BB63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{114B986B-34BE-473A-9EE1-2FAC5E18BB63}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{114B986B-34BE-473A-9EE1-2FAC5E18BB63}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{114B986B-34BE-473A-9EE1-2FAC5E18BB63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A448F43-FE34-4D59-8F5E-C7389169995D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A448F43-FE34-4D59-8F5E-C7389169995D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A448F43-FE34-4D59-8F5E-C7389169995D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A448F43-FE34-4D59-8F5E-C7389169995D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9187F89F-FE63-4082-A227-630C0C9B970E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9187F89F-FE63-4082-A227-630C0C9B970E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9187F89F-FE63-4082-A227-630C0C9B970E}.Release|Any CPU.ActiveCfg = Release|Any CPU

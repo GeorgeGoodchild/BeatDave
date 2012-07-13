@@ -1,27 +1,25 @@
-using System.Net;
+﻿using System.Net;
+using System.Net.Http.Formatting;
 using System.Net.Sockets;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
-using AutoMapper;
 using BeatDave.Web.Infrastructure;
 using DataAnnotationsExtensions.ClientValidation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using NLog;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Client.MvcIntegration;
 
 namespace BeatDave.Web
-{    
+{
     public class WebApiApplication : HttpApplication
     {
         // Static Properties
         public static IDocumentStore DocumentStore { get; private set; }
-
 
         // C'tor
         public WebApiApplication()
@@ -42,28 +40,24 @@ namespace BeatDave.Web
 
                     session.SaveChanges();
                 }
-                //TaskExecutor.StartExecuting();
             };
         }
 
         protected void Application_Start()
         {
-            LogManager.GetCurrentClassLogger().Info("Started application");
-
-            RegisterGlobalFilters(GlobalFilters.Filters);
             AreaRegistration.RegisterAllAreas();
+            RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
             RegisterFormatters(GlobalConfiguration.Configuration);
-
+            
             InitializeDocumentStore();
             FatController.DocumentStore = DocumentStore;
             FatApiController.DocumentStore = DocumentStore;
-            //TaskExecutor.DocumentStore = DocumentStore;
 
             AutoMapperConfiguration.Configure();
-            Mapper.AssertConfigurationIsValid();
             DataAnnotationsModelValidatorProviderExtensions.RegisterValidationExtensions();
         }
+
 
 
         // Helpers
@@ -75,7 +69,6 @@ namespace BeatDave.Web
         private void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-            routes.IgnoreRoute("favicon.ico");
         }
 
         private void RegisterFormatters(HttpConfiguration config)
@@ -87,10 +80,8 @@ namespace BeatDave.Web
             settings.Converters.Add(new IsoDateTimeConverter());
             settings.Converters.Add(new StringEnumConverter());
 
-            //
-            // Setting it at position [0] makes it the default formatter and will override the DataContratSerializer for JSON messages
-            // 
-            config.Formatters[0] = new JsonNetFormatter(settings);
+            var formatter = (JsonMediaTypeFormatter)config.Formatters[0];
+            formatter.SerializerSettings = settings;
         }
 
         private void InitializeDocumentStore()

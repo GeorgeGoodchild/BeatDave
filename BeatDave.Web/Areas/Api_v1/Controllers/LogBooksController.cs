@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Principal;
@@ -7,7 +8,6 @@ using BeatDave.Web.Areas.Api_v1.Models;
 using BeatDave.Web.Infrastructure;
 using Raven.Client;
 using Raven.Client.Linq;
-using System;
 
 namespace BeatDave.Web.Areas.Api_v1.Controllers
 {
@@ -21,9 +21,12 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
 
 
         // GET /Api/v1/LogBooks
-        public HttpResponseMessage Get(string q = "", int skip = DefaultSkip, int take = DefaultTake, string fields = "")
+        public HttpResponseMessage Get(string q = "", 
+                                       int skip = ApplicationConstants.DefaultSkip, 
+                                       int take = ApplicationConstants.DefaultTake, 
+                                       string fields = "")
         {
-            if (take > MaxTake)
+            if (take > ApplicationConstants.MaxTake)
                 return BadRequest(string.Concat("Maximum take value is ", take));
 
             var stats = new RavenQueryStatistics();            

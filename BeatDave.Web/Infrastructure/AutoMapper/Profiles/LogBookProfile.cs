@@ -17,7 +17,7 @@ namespace BeatDave.Web.Infrastructure
             Mapper.CreateMap<LogBookInput, LogBook>()
                 .ForMember(t => t.Id, o => o.Ignore())
                 .ForMember(t => t.AutoShareOn, o => o.Ignore())
-                .ForMember(t => t.OwnerId, o => o.MapFrom(s => HttpContext.Current.User.Identity.Name))
+                .ForMember(t => t.OwnerId, o => o.MapFrom(s => HttpContext.Current.User.Identity.Name)) // TODO: Inject IPrincipal into this and remove the dependency on HttpContext
                 .ForMember(t => t.AutoShareOn, o => o.Ignore());
 
             Mapper.CreateMap<LogBookInput.UnitsInput, Units>();
@@ -30,7 +30,7 @@ namespace BeatDave.Web.Infrastructure
             Mapper.CreateMap<CommentInput, Comment<Entry>>()
                 .ForMember(t => t.Id, o => o.Ignore())
                 .ForMember(t => t.CommentOn, o => o.Ignore())
-                .ForMember(t => t.CreatedBy, o => o.MapFrom(s => HttpContext.Current.User.Identity.Name))
+                .ForMember(t => t.CreatedBy, o => o.MapFrom(s => HttpContext.Current.User.Identity.Name)) // TODO: Inject IPrincipal into this and remove the dependency on HttpContext
                 .ForMember(t => t.CreatedOn, o => o.Ignore());
 
             //

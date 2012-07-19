@@ -1,11 +1,11 @@
-﻿using System.Security.Principal;
+﻿using System;
+using System.Security.Principal;
 using System.Web;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Client.MvcIntegration;
 using StructureMap;
-using System;
 
 namespace BeatDave.Web.Infrastructure
 { 
@@ -20,6 +20,7 @@ namespace BeatDave.Web.Infrastructure
             
             ObjectFactory.Initialize(i =>
             {
+                // TODO: Remove this once you've figured out why ApiController.User always returns an unauthenticated user
                 i.For<Func<IPrincipal>>()
                     .HybridHttpOrThreadLocalScoped()
                     .Use(x => () => HttpContext.Current.User);

@@ -165,6 +165,7 @@
     <Compile Include="Infrastructure\AutoMapper\Resolvers\DateTimeViewResolver.cs" />
     <Compile Include="Infrastructure\AutoMapper\Resolvers\RavenIdResolver.cs" />
     <Compile Include="Infrastructure\Bootstrapper.cs" />
+    <Compile Include="Infrastructure\ApplicationConstants.cs" />
     <Compile Include="Infrastructure\Controllers\FatApiController.cs" />
     <Compile Include="Infrastructure\Controllers\FatController.cs" />
     <Compile Include="Infrastructure\Controllers\StructureMapControllerFactory.cs" />

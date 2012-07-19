@@ -1,6 +1,4 @@
-﻿using System.Net;
-using System.Net.Http.Formatting;
-using System.Net.Sockets;
+﻿using System.Net.Http.Formatting;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -9,39 +7,15 @@ using BeatDave.Web.Infrastructure;
 using DataAnnotationsExtensions.ClientValidation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Raven.Client;
-using Raven.Client.Document;
-using Raven.Client.Indexes;
-using Raven.Client.MvcIntegration;
+using StructureMap;
 
 namespace BeatDave.Web
 {
     public class WebApiApplication : HttpApplication
-    {
-        // Static Properties
-        public static IDocumentStore DocumentStore { get; private set; }
-
+    {        
         // C'tor
         public WebApiApplication()
-        {
-            BeginRequest += (sender, args) =>
-            {
-                HttpContext.Current.Items["CurrentRequestRavenSession"] = FatController.DocumentStore.OpenSession();
-            };
-            EndRequest += (sender, args) =>
-            {
-                using (var session = (IDocumentSession)HttpContext.Current.Items["CurrentRequestRavenSession"])
-                {
-                    if (session == null)
-                        return;
-
-                    if (Server.GetLastError() != null)
-                        return;
-
-                    session.SaveChanges();
-                }
-            };
-        }
+        { }
 
         protected void Application_Start()
         {
@@ -50,12 +24,17 @@ namespace BeatDave.Web
             RegisterRoutes(RouteTable.Routes);
             RegisterFormatters(GlobalConfiguration.Configuration);
             
-            InitializeDocumentStore();
-            FatController.DocumentStore = DocumentStore;
-            FatApiController.DocumentStore = DocumentStore;
-
+            Bootstrapper.Bootstrap();
             AutoMapperConfiguration.Configure();
             DataAnnotationsModelValidatorProviderExtensions.RegisterValidationExtensions();
+
+            ControllerBuilder.Current.SetControllerFactory(new StructureMapControllerFactory());  
+            GlobalConfiguration.Configuration.DependencyResolver = new StructureMapDependencyResolver();
+        }
+
+        protected void Application_EndRequest()
+        {
+            ObjectFactory.ReleaseAndDisposeAllHttpScopedObjects();
         }
 
 
@@ -82,47 +61,6 @@ namespace BeatDave.Web
 
             var formatter = (JsonMediaTypeFormatter)config.Formatters[0];
             formatter.SerializerSettings = settings;
-        }
-
-        private void InitializeDocumentStore()
-        {
-            DocumentStore = new DocumentStore { ConnectionStringName = "BeatDave" }.Initialize();
-
-            TryCreatingIndexesOrRedirectToErrorPage();
-
-            RavenProfiler.InitializeFor(DocumentStore);
-        }
-
-        private void TryCreatingIndexesOrRedirectToErrorPage()
-        {
-            try
-            {
-                IndexCreation.CreateIndexes(typeof(WebApiApplication).Assembly, DocumentStore);
-            }
-            catch (WebException e)
-            {
-                var socketException = e.InnerException as SocketException;
-                if (socketException == null)
-                    throw;
-
-                switch (socketException.SocketErrorCode)
-                {
-                    case SocketError.AddressNotAvailable:
-                    case SocketError.NetworkDown:
-                    case SocketError.NetworkUnreachable:
-                    case SocketError.ConnectionAborted:
-                    case SocketError.ConnectionReset:
-                    case SocketError.TimedOut:
-                    case SocketError.ConnectionRefused:
-                    case SocketError.HostDown:
-                    case SocketError.HostUnreachable:
-                    case SocketError.HostNotFound:
-                        HttpContext.Current.Response.Redirect("Views/500.htm");
-                        break;
-                    default:
-                        throw;
-                }
-            }
         }
     }
 }

@@ -1,14 +1,23 @@
+using System;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Principal;
 using System.Web.Security;
 using BeatDave.Domain;
 using BeatDave.Web.Areas.Api_v1.Models;
 using BeatDave.Web.Infrastructure;
+using Raven.Client;
 
 namespace BeatDave.Web.Areas.Api_v1.Controllers
 {
     public class UsersController : FatApiController
     {
+        // C'tor
+        public UsersController(IDocumentSession documentSession, Func<IPrincipal> user)
+            : base (documentSession, user)
+        { }
+
+
         // GET
         public HttpResponseMessage Get(string username)
         {

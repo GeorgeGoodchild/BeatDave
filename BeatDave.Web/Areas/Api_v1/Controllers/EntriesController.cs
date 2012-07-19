@@ -1,15 +1,24 @@
 using System.Linq;
 using System.Net.Http;
+using System.Security.Principal;
 using System.Web.Http;
 using BeatDave.Domain;
 using BeatDave.Web.Areas.Api_v1.Models;
 using BeatDave.Web.Infrastructure;
+using Raven.Client;
+using System;
 
 namespace BeatDave.Web.Areas.Api_v1.Controllers
 {
     [BasicAuthorize]
     public class EntriesController : FatApiController
     {
+        // C'tor
+        public EntriesController(IDocumentSession documentSession, Func<IPrincipal> user)
+            : base (documentSession, user)
+        { }
+
+
         // GET /Api/v1/LogBooks/33/Entries
         public HttpResponseMessage Get(int logBookId)
         {   
@@ -33,7 +42,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         public HttpResponseMessage Get(int logBookId, int entryId)
         {
             var logBook = base.RavenSession.Include<LogBook>(x => x.OwnerId)
-                                           .Load<LogBook>(logBookId);
+                                              .Load<LogBook>(logBookId);
 
             if (logBook == null)
                 return NotFound();

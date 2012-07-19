@@ -1,16 +1,25 @@
 using System.Linq;
 using System.Net.Http;
+using System.Security.Principal;
 using System.Web.Http;
 using BeatDave.Domain;
 using BeatDave.Web.Areas.Api_v1.Models;
 using BeatDave.Web.Infrastructure;
+using Raven.Client;
 using Raven.Client.Linq;
+using System;
 
 namespace BeatDave.Web.Areas.Api_v1.Controllers
 {
     [BasicAuthorize]
     public class LogBooksController : FatApiController
     {
+        // C'tor
+        public LogBooksController(IDocumentSession documentSession, Func<IPrincipal> user)
+            : base(documentSession, user)
+        { }
+
+
         // GET /Api/v1/LogBooks
         public HttpResponseMessage Get(string q = "", int skip = DefaultSkip, int take = DefaultTake, string fields = "")
         {
@@ -28,7 +37,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
                                             .Skip(skip)
                                             .Take(take)
                                             .ToArray()
-                                            .Where(x => x.IsVisibleTo(base.User.Identity.Name, (ownerId) => RavenSession.Load<User>(ownerId).GetFriends()))
+                                            .Where(x => x.IsVisibleTo(base.User.Identity.Name, (ownerId) => base.RavenSession.Load<User>(ownerId).GetFriends()))
                                             .ToArray();
 
             var fieldsArray = fields.Split(new[] { ' ', '+' })
@@ -49,11 +58,11 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         public HttpResponseMessage Get(int logBookId)
         {
             var logBook = base.RavenSession.Include<LogBook>(x => x.OwnerId)
-                                           .Load<LogBook>(logBookId);
+                                              .Load<LogBook>(logBookId);
 
             if (logBook == null)
                 return NotFound();
-            
+
             if (logBook.IsVisibleTo(base.User.Identity.Name, (ownerId) => base.RavenSession.Load<User>(ownerId).GetFriends()) == false)
                 return Forbidden();
 
@@ -100,8 +109,8 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             if (logBook.IsOwnedBy(base.User.Identity.Name) == false)
                 return Forbidden();
 
-            logBookInput.MapToInstance(logBook);
-           
+            logBookInput.MapToInstance(logBook);            
+
             var logBookView = logBook.MapTo<LogBookView>();
 
             return Ok(logBookView);
@@ -112,7 +121,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         // DELETE /Api/v1/LogBooks/5
         public HttpResponseMessage Delete(int logBookId)
         {
-             var logBook = base.RavenSession.Load<LogBook>(logBookId);
+            var logBook = base.RavenSession.Load<LogBook>(logBookId);
             
             if (logBook == null)
                 return NotFound();

@@ -1,15 +1,23 @@
+using System;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Principal;
 using System.Web.Http;
 using BeatDave.Domain;
 using BeatDave.Web.Areas.Api_v1.Models;
 using BeatDave.Web.Infrastructure;
+using Raven.Client;
 
 namespace BeatDave.Web.Areas.Api_v1.Controllers
 {
     [BasicAuthorize]
     public class CommentsController : FatApiController
-    {
+    {        
+        // C'tor
+        public CommentsController(IDocumentSession documentSession, Func<IPrincipal> user)
+            : base(documentSession, user)
+        { }
+
         // POST /Api/v1/LogBooks/33/Entries/1/Comments
         public HttpResponseMessage Post([FromUri]int? logBookId, [FromUri]int? entryId, CommentInput commentInput)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Principal;
+using System.Web;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
@@ -19,10 +20,10 @@ namespace BeatDave.Web.Infrastructure
             
             ObjectFactory.Initialize(i =>
             {
-                // TODO: Remove this once you've figured out why ApiController.User always returns an unauthenticated user
+                // TODO: Remove this and all the injections once you've figured out why ApiController.User always returns an unauthenticated user
                 i.For<Func<IPrincipal>>()
                     .HybridHttpOrThreadLocalScoped()
-                    .Use(x => () => ShortConversation.Data[AppConstants.UserKey] as IPrincipal);
+                    .Use(x => () => HttpContext.Current.User);
 
                 i.For<IDocumentStore>().Use(documentStore);
 

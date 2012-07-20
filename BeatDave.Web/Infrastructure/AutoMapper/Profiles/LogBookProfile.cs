@@ -1,4 +1,5 @@
 
+using System;
 using System.Linq;
 using System.Security.Principal;
 using AutoMapper;
@@ -9,17 +10,27 @@ namespace BeatDave.Web.Infrastructure
 {
     public class LogBookProfile : Profile
     {
+        // Instance Variables
+        private readonly Func<IPrincipal> _getUser;
+
+
+        // C'tor
+        public LogBookProfile(Func<IPrincipal> getUser)
+        {
+            _getUser = getUser;
+        }
+
+
+        // Profile Overrides
         protected override void Configure()
         {
-            // TODO: Find out how to inject IPrincipal into this
-
             //
             // LogBookInput -> Model
             //
             Mapper.CreateMap<LogBookInput, LogBook>()
                 .ForMember(t => t.Id, o => o.Ignore())
                 .ForMember(t => t.AutoShareOn, o => o.Ignore())
-                .ForMember(t => t.OwnerId, o => o.MapFrom(s => ((IPrincipal)ShortConversation.Data[AppConstants.UserKey]).Identity.Name))
+                .ForMember(t => t.OwnerId, o => o.MapFrom(s => _getUser().Identity.Name))
                 .ForMember(t => t.AutoShareOn, o => o.Ignore());
 
             Mapper.CreateMap<LogBookInput.UnitsInput, Units>();
@@ -32,7 +43,7 @@ namespace BeatDave.Web.Infrastructure
             Mapper.CreateMap<CommentInput, Comment<Entry>>()
                 .ForMember(t => t.Id, o => o.Ignore())
                 .ForMember(t => t.CommentOn, o => o.Ignore())
-                .ForMember(t => t.CreatedBy, o => o.MapFrom(s => ((IPrincipal)ShortConversation.Data[AppConstants.UserKey]).Identity.Name))
+                .ForMember(t => t.CreatedBy, o => o.MapFrom(s => _getUser().Identity.Name))
                 .ForMember(t => t.CreatedOn, o => o.Ignore());
 
             //

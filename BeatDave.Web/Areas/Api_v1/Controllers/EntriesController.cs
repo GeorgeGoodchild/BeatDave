@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Principal;
@@ -6,7 +7,6 @@ using BeatDave.Domain;
 using BeatDave.Web.Areas.Api_v1.Models;
 using BeatDave.Web.Infrastructure;
 using Raven.Client;
-using System;
 
 namespace BeatDave.Web.Areas.Api_v1.Controllers
 {

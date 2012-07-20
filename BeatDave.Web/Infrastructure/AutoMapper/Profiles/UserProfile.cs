@@ -14,6 +14,7 @@ namespace BeatDave.Web.Infrastructure
             Mapper.CreateMap<UserInput, User>()
                 .ForMember(t => t.Id, o => o.MapFrom(s => s.Username))
                 .ForMember(t => t.AspNetId, o => o.Ignore());
+
             //
             // User -> UserView
             //

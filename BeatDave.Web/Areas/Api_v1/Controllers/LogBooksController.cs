@@ -22,11 +22,11 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
 
         // GET /Api/v1/LogBooks
         public HttpResponseMessage Get(string q = "", 
-                                       int skip = ApplicationConstants.DefaultSkip, 
-                                       int take = ApplicationConstants.DefaultTake, 
+                                       int skip = AppConstants.DefaultSkip, 
+                                       int take = AppConstants.DefaultTake, 
                                        string fields = "")
         {
-            if (take > ApplicationConstants.MaxTake)
+            if (take > AppConstants.MaxTake)
                 return BadRequest(string.Concat("Maximum take value is ", take));
 
             var stats = new RavenQueryStatistics();            

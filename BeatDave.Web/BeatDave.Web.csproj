@@ -165,7 +165,7 @@
     <Compile Include="Infrastructure\AutoMapper\Resolvers\DateTimeViewResolver.cs" />
     <Compile Include="Infrastructure\AutoMapper\Resolvers\RavenIdResolver.cs" />
     <Compile Include="Infrastructure\Bootstrapper.cs" />
-    <Compile Include="Infrastructure\ApplicationConstants.cs" />
+    <Compile Include="Infrastructure\AppConstants.cs" />
     <Compile Include="Infrastructure\Controllers\FatApiController.cs" />
     <Compile Include="Infrastructure\Controllers\FatController.cs" />
     <Compile Include="Infrastructure\Controllers\StructureMapControllerFactory.cs" />
@@ -177,6 +177,7 @@
     <Compile Include="Infrastructure\Filters\SaveChangesOnExit.cs" />
     <Compile Include="Infrastructure\Formatters\JsonDotNetFormatter.cs" />
     <Compile Include="Infrastructure\HttpModules\SuppressFormsAuthenticationRedirectModule.cs" />
+    <Compile Include="Infrastructure\Utilities\ShortConversation.cs" />
     <Compile Include="Infrastructure\Validation\ModelStateExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

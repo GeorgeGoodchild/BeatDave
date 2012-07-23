@@ -97,10 +97,6 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         // PUT /Api/v1/LogBooks/33
         public HttpResponseMessage Put([FromUri]int? logBookId, LogBookInput logBookInput)
         {
-            // HACK: Once out of beta the logBookId parameter should be bound from the Url rather than the request body
-            //       Stop the parameter being nullable too
-            if (logBookId.HasValue == false) logBookId = logBookInput.LogBookId;
-
             if (ModelState.IsValid == false)
                 return BadRequest(ModelState.FirstErrorMessage());
 

@@ -20,12 +20,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
 
         // POST /Api/v1/LogBooks/33/Entries/1/Comments
         public HttpResponseMessage Post([FromUri]int? logBookId, [FromUri]int? entryId, CommentInput commentInput)
-        {
-            // HACK: Once out of beta the logBookId parameter should be bound from the Url rather than the request body
-            //       Stop the parameter being nullable too
-            if (logBookId.HasValue == false) logBookId = commentInput.LogBookId;
-            if (entryId.HasValue == false) entryId = commentInput.EntryId;
-
+        {            
             var logBook = base.RavenSession.Load<LogBook>(logBookId);
 
             if (logBook == null)
@@ -55,11 +50,6 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         // PUT /Api/v1/LogBooks/33/Entries/13/Comments/7
         public HttpResponseMessage Put([FromUri]int? logBookId, [FromUri]int? entryId, [FromUri]int? commentId, CommentInput commentInput)
         {
-            // HACK: Once out of beta the logBookId parameter should be bound from the Url rather than the request body
-            //       Stop the parameter being nullable too
-            if (logBookId.HasValue == false) logBookId = commentInput.LogBookId;
-            if (entryId.HasValue == false) entryId = commentInput.EntryId;
-
             var logBook = base.RavenSession.Load<LogBook>(logBookId);
 
             if (logBook == null)

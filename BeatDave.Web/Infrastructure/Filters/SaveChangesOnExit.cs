@@ -14,7 +14,6 @@ namespace BeatDave.Web.Infrastructure
             if (fatApiController == null)
                 return;
 
-
             fatApiController.RavenSession.SaveChanges();
         }
     }

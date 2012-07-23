@@ -162,6 +162,7 @@
     <Compile Include="Infrastructure\AutoMapper\AutoMapperExtensions.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\LogBookProfile.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\UserProfile.cs" />
+    <Compile Include="Infrastructure\AutoMapper\Resolvers\OwnerResolver.cs" />
     <Compile Include="Infrastructure\AutoMapper\Resolvers\DateTimeViewResolver.cs" />
     <Compile Include="Infrastructure\AutoMapper\Resolvers\RavenIdResolver.cs" />
     <Compile Include="Infrastructure\Bootstrapper.cs" />

@@ -18,7 +18,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         { }
 
 
-        // GET
+        // GET /Api/v1/Users/George
         public HttpResponseMessage Get(string username)
         {
             if (string.IsNullOrWhiteSpace(username))

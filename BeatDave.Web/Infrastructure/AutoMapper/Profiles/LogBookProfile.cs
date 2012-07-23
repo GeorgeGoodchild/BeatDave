@@ -1,6 +1,5 @@
 
 using System;
-using System.Linq;
 using System.Security.Principal;
 using AutoMapper;
 using BeatDave.Domain;
@@ -51,7 +50,7 @@ namespace BeatDave.Web.Infrastructure
             //
             Mapper.CreateMap<LogBook, LogBookView>()
                 .ForMember(t => t.Id, o => o.MapFrom(s => RavenIdResolver.Resolve(s.Id)))
-                .ForMember(t => t.Owner, o => o.Ignore());  // TODO: Ouput the appropriate value based on Visibility
+                .ForMember(t => t.Owner, o => o.MapFrom(s => OwnerNameResolver.Resolve(s, _getUser)));
 
             Mapper.CreateMap<Units, LogBookView.UnitsView>();
 
@@ -63,10 +62,6 @@ namespace BeatDave.Web.Infrastructure
 
             Mapper.CreateMap<ISocialNetworkAccount, LogBookView.SocialNetworkAccountView>()
                 .ForMember(t => t.NetworkName, o => o.MapFrom(s => s.SocialNetworkName));
-
-            Mapper.CreateMap<User, LogBookView.OwnerView>()
-                .ForMember(t => t.OwnerUsername, o => o.MapFrom(s => s.Id.Split('/').Last()))
-                .ForMember(t => t.OwnerFullName, o => o.MapFrom(s => (s.FirstName + " " + s.LastName).Trim()));
         }
     }
 }

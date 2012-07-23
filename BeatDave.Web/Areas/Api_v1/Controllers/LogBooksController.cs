@@ -61,7 +61,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
         public HttpResponseMessage Get(int logBookId)
         {
             var logBook = base.RavenSession.Include<LogBook>(x => x.OwnerId)
-                                              .Load<LogBook>(logBookId);
+                                           .Load<LogBook>(logBookId);
 
             if (logBook == null)
                 return NotFound();

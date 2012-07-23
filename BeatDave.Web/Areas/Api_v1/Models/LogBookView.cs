@@ -13,7 +13,7 @@ namespace BeatDave.Web.Areas.Api_v1.Models
         public UnitsView Units { get; set; }
         public List<EntryView> Entries { get; set; }
 
-        public OwnerView Owner { get; set; }
+        public string Owner { get; set; }
         public List<SocialNetworkAccountView> AutoShareOn { get; set; }
         public Visibility Visibility { get; set; }
 
@@ -40,12 +40,6 @@ namespace BeatDave.Web.Areas.Api_v1.Models
             public string Text { get; set; }
             public DateTimeView CreatedOn { get; internal set; }
             public string CreatedBy { get; set; }
-        }
-
-        public class OwnerView
-        {
-            public int OwnerUsername { get; set; }
-            public string OwnerFullName { get; set; }
         }
 
         public class SocialNetworkAccountView

@@ -16,7 +16,7 @@ namespace BeatDave.Web.Infrastructure
         // Constants
         
         // Properties
-        public new IPrincipal User { get { return _getUser(); } }  // TODO: Why isn't the ApiController.User field returning the correct value?
+        public new IPrincipal User { get { return _getUser(); } }  // HACK: Why isn't the ApiController.User field returning the correct value?
         public IDocumentSession RavenSession { get; private set; }
 
 

@@ -18,6 +18,7 @@ namespace BeatDave.Web.Areas.Api_v1.Controllers
             : base(documentSession, user)
         { }
 
+
         // POST /Api/v1/LogBooks/33/Entries/1/Comments
         public HttpResponseMessage Post([FromUri]int? logBookId, [FromUri]int? entryId, CommentInput commentInput)
         {            

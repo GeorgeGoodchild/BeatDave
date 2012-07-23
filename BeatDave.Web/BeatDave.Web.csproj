@@ -160,11 +160,11 @@
     <Compile Include="Infrastructure\ActionResults\XmlResult.cs" />
     <Compile Include="Infrastructure\AutoMapper\AutoMapperConfiguration.cs" />
     <Compile Include="Infrastructure\AutoMapper\AutoMapperExtensions.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Profiles\LogBookProfile.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Profiles\UserProfile.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Resolvers\OwnerResolver.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Resolvers\DateTimeViewResolver.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Resolvers\RavenIdResolver.cs" />
+    <Compile Include="Areas\Api_v1\Mappings\LogBookProfile.cs" />
+    <Compile Include="Areas\Api_v1\Mappings\UserProfile.cs" />
+    <Compile Include="Areas\Api_v1\Mappings\Resolvers\OwnerResolver.cs" />
+    <Compile Include="Infrastructure\AutoMapper\DateTimeViewResolver.cs" />
+    <Compile Include="Infrastructure\AutoMapper\RavenIdResolver.cs" />
     <Compile Include="Infrastructure\Bootstrapper.cs" />
     <Compile Include="Infrastructure\AppConstants.cs" />
     <Compile Include="Infrastructure\Controllers\FatApiController.cs" />

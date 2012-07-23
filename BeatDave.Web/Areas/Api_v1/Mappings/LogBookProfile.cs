@@ -4,8 +4,9 @@ using System.Security.Principal;
 using AutoMapper;
 using BeatDave.Domain;
 using BeatDave.Web.Areas.Api_v1.Models;
+using BeatDave.Web.Infrastructure;
 
-namespace BeatDave.Web.Infrastructure
+namespace BeatDave.Web.Areas.Api_v1.Mappings
 {
     public class LogBookProfile : Profile
     {

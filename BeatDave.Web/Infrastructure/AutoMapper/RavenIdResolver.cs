@@ -1,9 +1,8 @@
-﻿
-namespace BeatDave.Web.Infrastructure
-{
-    using System;
-    using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 
+namespace BeatDave.Web.Infrastructure
+{    
     public class RavenIdResolver
     {        
         public static int Resolve(string ravenId)

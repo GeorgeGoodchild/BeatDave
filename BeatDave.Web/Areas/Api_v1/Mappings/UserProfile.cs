@@ -2,7 +2,7 @@ using AutoMapper;
 using BeatDave.Domain;
 using BeatDave.Web.Areas.Api_v1.Models;
 
-namespace BeatDave.Web.Infrastructure
+namespace BeatDave.Web.Areas.Api_v1.Mappings
 {
     public class UserProfile : Profile
     {

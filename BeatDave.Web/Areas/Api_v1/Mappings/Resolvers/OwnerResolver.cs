@@ -1,5 +1,5 @@
 ﻿
-namespace BeatDave.Web.Infrastructure
+namespace BeatDave.Web.Areas.Api_v1.Mappings
 {
     using System;
     using System.Security.Principal;
